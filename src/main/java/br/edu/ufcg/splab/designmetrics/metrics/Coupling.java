@@ -6,6 +6,7 @@ import java.util.Set;
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.FieldNode;
+import org.designwizard.design.MethodNode;
 
 public class Coupling {
 
@@ -22,7 +23,7 @@ public class Coupling {
             if (classNode == null) {
                 return 0;
             }
-            return getDirectRelatedEntities(classNode).size();
+            return getRelatedEntities(classNode).size();
         };
 
         return calculate(node, metric);
@@ -40,32 +41,67 @@ public class Coupling {
      * @param name
      * @return
      */
-    public Set<ClassNode> getDirectRelatedEntities(ClassNode classNode) {
+    public Set<ClassNode> getRelatedEntities(ClassNode classNode) {
         Set<ClassNode> directRelatedEntities = new HashSet<ClassNode>();
+
+        // Classes directly calls
+        directRelatedEntities.addAll(getDirectRelatedEntities(classNode));
+        // Classes in the methods type return
+        directRelatedEntities.addAll(getMethodReturnTypesEntities(classNode));
+        // Fields Declared
+        directRelatedEntities.addAll(getFieldDeclaredEntities(classNode));
+
+        return directRelatedEntities;
+    }
+
+    /**
+     * @param classNode
+     * @return
+     */
+    private Set<ClassNode> getDirectRelatedEntities(ClassNode classNode) {
+        Set<ClassNode> feedback = new HashSet<ClassNode>();
         Set<ClassNode> callees = classNode.getCalleeClasses();
         for (ClassNode callee : callees) {
             if (!callee.equals(classNode) && !callee.getClassName().equals("java.lang.Object")
                     && designwizard.getAllClasses().contains(callee)) {
-                directRelatedEntities.add(callee);
+                feedback.add(callee);
             }
         }
-        directRelatedEntities.addAll(getFieldDeclaredEntities(classNode));
-        return directRelatedEntities;
+        return feedback;
     }
 
+    /**
+     * @param classNode
+     * @return
+     */
     private Set<ClassNode> getFieldDeclaredEntities(ClassNode classNode) {
-        Set<ClassNode> feedBack = new HashSet<ClassNode>();
+        Set<ClassNode> feedback = new HashSet<ClassNode>();
         Set<FieldNode> fieldsDeclared = classNode.getAllFields();
 
         for (FieldNode field : fieldsDeclared) {
             ClassNode type = field.getType();
             if (!type.equals(classNode) && designwizard.getAllClasses().contains(type)) {
-                feedBack.add(type);
+                feedback.add(type);
             }
         }
 
-        return feedBack;
+        return feedback;
     }
 
-
+    /**
+     * @param classNode
+     * @return
+     */
+    private Set<ClassNode> getMethodReturnTypesEntities(ClassNode classNode) {
+        Set<ClassNode> feedback = new HashSet<ClassNode>();
+        Set<MethodNode> calleeMethods = classNode.getCalleeMethods();
+        for (MethodNode method : calleeMethods) {
+            ClassNode type = method.getReturnType();
+            if (type != null && !type.equals(classNode) && !type.getClassName().equals("java.lang.Object")
+                    && designwizard.getAllClasses().contains(type)) {
+                feedback.add(type);
+            }
+        }
+        return feedback;
+    }
 }

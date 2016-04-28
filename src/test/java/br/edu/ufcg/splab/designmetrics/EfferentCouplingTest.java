@@ -103,7 +103,7 @@ public class EfferentCouplingTest {
     /**
      */
     public void testCeClassA() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classA);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classA);
 
         softAssert.assertEquals(coupling.efferentCoupling(classA), 0, "\nCe: ");
         softAssert.assertEquals(directRelatedEntities.size(), 0);
@@ -111,14 +111,14 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassB() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classB);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classB);
         softAssert.assertTrue(directRelatedEntities.contains(classA));
         softAssert.assertEquals(coupling.efferentCoupling(classB), 1, "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassC() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classC);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classC);
         softAssert.assertTrue(directRelatedEntities.contains(classA));
         softAssert.assertTrue(directRelatedEntities.contains(classB));
         softAssert.assertEquals(coupling.efferentCoupling(classC), 2, "\nCe: ");
@@ -126,21 +126,21 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassD() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classD);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classD);
         softAssert.assertTrue(directRelatedEntities.contains(classC));
         softAssert.assertEquals(coupling.efferentCoupling(classD), 1, "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassE() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classE);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classE);
         softAssert.assertTrue(directRelatedEntities.contains(classC));
         softAssert.assertEquals(coupling.efferentCoupling(classE), 1, "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassF() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classF);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classF);
         softAssert.assertTrue(directRelatedEntities.contains(classD));
         softAssert.assertTrue(directRelatedEntities.contains(classE));
         softAssert.assertEquals(coupling.efferentCoupling(classF), 2, "\nCe: ");
@@ -148,17 +148,14 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassG() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classG);
-        for (ClassNode classNode : directRelatedEntities) {
-            System.out.println("ClassG -> " + classNode.getClassName());
-        }
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classG);
         softAssert.assertTrue(directRelatedEntities.contains(classF));
         softAssert.assertEquals(coupling.efferentCoupling(classG), 1, "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassH() {
-        Set<ClassNode> directRelatedEntities = coupling.getDirectRelatedEntities(classH);
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classH);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertEquals(coupling.efferentCoupling(classH), 2, "\nCe: ");
