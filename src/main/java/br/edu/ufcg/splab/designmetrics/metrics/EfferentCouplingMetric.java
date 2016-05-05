@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.FieldNode;
+import org.designwizard.design.MethodNode;
 
 public class EfferentCouplingMetric implements Metric {
 
@@ -41,12 +42,24 @@ public class EfferentCouplingMetric implements Metric {
      */
     public Set<ClassNode> getDirectRelatedEntities(ClassNode classNode) {
         Set<ClassNode> directRelatedEntities = new HashSet<ClassNode>();
+
+        // Classes directly calls
         Set<ClassNode> callees = classNode.getCalleeClasses();
         for (ClassNode callee : callees) {
             if (!callee.equals(classNode) && !callee.getClassName().equals("java.lang.Object")) {
                 directRelatedEntities.add(callee);
             }
         }
+        // Classes calls for methods
+        Set<MethodNode> calleeMethods = classNode.getCalleeMethods();
+        for (MethodNode method : calleeMethods) {
+            ClassNode callee = method.getClassNode();
+            if (!callee.equals(classNode) && !callee.getClassName().equals("java.lang.Object")) {
+                directRelatedEntities.add(callee);
+            }
+        }
+
+        // Fields Declared
         directRelatedEntities.addAll(getFieldDeclaredEntities(classNode));
         return directRelatedEntities;
     }
