@@ -46,8 +46,8 @@ public class Coupling {
 
         // Classes directly calls
         directRelatedEntities.addAll(getDirectRelatedEntities(classNode));
-        // Classes in the methods type return
-        directRelatedEntities.addAll(getMethodReturnTypesEntities(classNode));
+        // Classes in the methods type return or method parameters
+        directRelatedEntities.addAll(getMethodRelatedEntities(classNode));
         // Fields Declared
         directRelatedEntities.addAll(getFieldDeclaredEntities(classNode));
 
@@ -61,9 +61,9 @@ public class Coupling {
     private Set<ClassNode> getDirectRelatedEntities(ClassNode classNode) {
         Set<ClassNode> feedback = new HashSet<ClassNode>();
         Set<ClassNode> callees = classNode.getCalleeClasses();
+
         for (ClassNode callee : callees) {
-            if (!callee.equals(classNode) && !callee.getClassName().equals("java.lang.Object")
-                    && designwizard.getAllClasses().contains(callee)) {
+            if (isNewRelatedClass(classNode, callee)) {
                 feedback.add(callee);
             }
         }
@@ -80,7 +80,7 @@ public class Coupling {
 
         for (FieldNode field : fieldsDeclared) {
             ClassNode type = field.getType();
-            if (!type.equals(classNode) && designwizard.getAllClasses().contains(type)) {
+            if (isNewRelatedClass(classNode, type)) {
                 feedback.add(type);
             }
         }
@@ -92,16 +92,52 @@ public class Coupling {
      * @param classNode
      * @return
      */
-    private Set<ClassNode> getMethodReturnTypesEntities(ClassNode classNode) {
+    private Set<ClassNode> getMethodRelatedEntities(ClassNode classNode) {
         Set<ClassNode> feedback = new HashSet<ClassNode>();
-        Set<MethodNode> calleeMethods = classNode.getCalleeMethods();
-        for (MethodNode method : calleeMethods) {
+
+        Set<MethodNode> methods = new HashSet<MethodNode>();
+        methods.addAll(classNode.getAllMethods());
+        methods.addAll(classNode.getCalleeMethods());
+
+        for (MethodNode method : methods) {
             ClassNode type = method.getReturnType();
-            if (type != null && !type.equals(classNode) && !type.getClassName().equals("java.lang.Object")
-                    && designwizard.getAllClasses().contains(type)) {
+            if (isNewRelatedClass(classNode, type)) {
                 feedback.add(type);
+            }
+
+            Set<ClassNode> parameters = getParameters(method);
+
+            for (ClassNode parameter : parameters) {
+                if (isNewRelatedClass(classNode, parameter)) {
+                    feedback.add(parameter);
+                }
             }
         }
         return feedback;
+    }
+
+    private Set<ClassNode> getParameters(MethodNode method) {
+        Set<ClassNode> parameters = method.getParameters();
+
+        if (parameters == null) {
+            return new HashSet<ClassNode>();
+        }
+
+        return parameters;
+    }
+
+    private boolean isInTheDesign(ClassNode classNode) {
+        if (this.designwizard == null || designwizard.getAllClasses() == null) {
+            return false;
+        }
+        return designwizard.getAllClasses().contains(classNode);
+    }
+
+    private boolean isNewRelatedClass(ClassNode classNode, ClassNode newClass) {
+        if (newClass != null && !newClass.equals(classNode) && !newClass.getClassName().equals("java.lang.Object")
+                && isInTheDesign(newClass)) {
+            return true;
+        }
+        return false;
     }
 }
