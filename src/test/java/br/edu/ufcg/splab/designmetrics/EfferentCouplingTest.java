@@ -29,17 +29,22 @@ import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
  *  Ca: Afferent coupling (not a C&K metric)
  *  NPM: Number of Public Methods for a class (not a C&K metric)
  *
- * java -jar ~/dev/ckjm-1.9/build/ckjm-1.9.jar *.class
+ * <code>java -jar ~/dev/ckjm-1.9/build/ckjm-1.9.jar *.class</code>
  *
- * br.edu.ufcg.splab.designmetrics.mocks.ClassA   1   1   0   0   2   0   2   1
- * br.edu.ufcg.splab.designmetrics.mocks.ClassB   1   1   0   1   2   0   1   1
- * br.edu.ufcg.splab.designmetrics.mocks.ClassC   1   1   0   2   2   0   2   1
- * br.edu.ufcg.splab.designmetrics.mocks.ClassD   1   1   0   1   2   0   2   1
- * br.edu.ufcg.splab.designmetrics.mocks.ClassE   3   1   0   1   4   1   1   3
- * br.edu.ufcg.splab.designmetrics.mocks.ClassF  13   1   0   2  15  62   2  13
- * br.edu.ufcg.splab.designmetrics.mocks.ClassG   2   1   0   1   4   1   0   2
- * br.edu.ufcg.splab.designmetrics.mocks.ClassH   3   1   0   2   6   1   0   3
-
+ *                                               WMC DIT NOC CBO RFC LCOM Ca  NPM
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassA   1   1   0   0   2    0   2   1
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassB   1   1   0   1   2    0   1   1
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassC   1   1   0   2   2    0   2   1
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassD   1   1   0   1   2    0   6   1
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassE   3   1   0   1   4    1   3   3
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassF  13   1   0   2  15   62   7  13
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassG   2   1   0   1   4    1   0   2
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassH   3   1   0   2   6    1   0   3
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassI   4   1   0   3  10    0   0   4
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassJ   2   1   0   1   4    1   0   2
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassK   2   1   0   2   4    1   0   2
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassL   3   1   0   3   9    4   1   4
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassM   3   1   0   3   6    3   0   3
  *
  * @author Taciano Morais Silva - tacianosilva@gmail.com
  */
@@ -58,6 +63,11 @@ public class EfferentCouplingTest {
     private ClassNode classF;
     private ClassNode classG;
     private ClassNode classH;
+    private ClassNode classI;
+    private ClassNode classJ;
+    private ClassNode classK;
+    private ClassNode classL;
+    private ClassNode classM;
 
     @BeforeClass
     public void setUp() throws Exception {
@@ -89,6 +99,20 @@ public class EfferentCouplingTest {
 
         // Classe com um atributo da Classe F e faz chamada a dois método do tipo Classe D
         classH = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassH");
+
+        // Classe com um atributo da Classe F e faz chamada a três método do tipo Classe D e Classe E
+        classI = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassI");
+
+        // Classe com um atributo da Classe F e faz chamada a um método com parâmetros do tipo Classe D
+        classJ = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassJ");
+
+        // Classe com um atributo da Classe F e faz chamada a um método com parâmetros do tipo Classe D (variável local)
+        classK = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassK");
+
+        // TODO Testar se é o parâmetro ou a variável local que configura o acoplamento
+        classL = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassL");
+
+        classM = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassM");
     }
 
     @BeforeMethod
@@ -159,6 +183,47 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertEquals(coupling.efferentCoupling(classH), 2, "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassI() {
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classI);
+        softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
+        softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
+        softAssert.assertTrue(directRelatedEntities.contains(classE), "\nClassE");
+        softAssert.assertEquals(coupling.efferentCoupling(classI), 3, "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassJ() {
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classJ);
+        softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
+        softAssert.assertEquals(coupling.efferentCoupling(classJ), 1, "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassK() {
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classK);
+        softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
+        softAssert.assertEquals(coupling.efferentCoupling(classK), 2, "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassL() {
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classL);
+        softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
+        softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
+        softAssert.assertTrue(directRelatedEntities.contains(classE), "\nClassE");
+        softAssert.assertEquals(coupling.efferentCoupling(classL), 3, "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassM() {
+        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classM);
+        softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
+        softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
+        softAssert.assertTrue(directRelatedEntities.contains(classL), "\nClassL");
+        softAssert.assertEquals(coupling.efferentCoupling(classM), 3, "\nCe: ");
         softAssert.assertAll();
     }
 }
