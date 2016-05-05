@@ -98,7 +98,6 @@ public class EfferentCouplingMetricTest {
         softAssert.assertAll();
     }
 
-    @Test(enabled = false)
     public void testCeMethodNode() {
         Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(methodNode);
         for (ClassNode node : directRelatedEntities) {
