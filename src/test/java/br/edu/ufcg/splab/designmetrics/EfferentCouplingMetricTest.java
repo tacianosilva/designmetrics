@@ -60,7 +60,7 @@ public class EfferentCouplingMetricTest {
         softAssert.assertTrue(directRelatedEntities.contains(classNode), "class: ");
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode), "field: ");
         softAssert.assertTrue(directRelatedEntities.contains(methodNode), "method: ");
-        softAssert.assertEquals(coupling.efferentCoupling(designIF), 8, "\n designIF Ce: ");
+        softAssert.assertEquals(coupling.efferentCoupling(designIF), new Integer(8), "\n designIF Ce: ");
         softAssert.assertAll();
     }
 
@@ -71,7 +71,7 @@ public class EfferentCouplingMetricTest {
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode));
         softAssert.assertTrue(directRelatedEntities.contains(methodNode));
         softAssert.assertTrue(directRelatedEntities.contains(relation));
-        softAssert.assertEquals(coupling.efferentCoupling(design), 14, "\n design Ce: ");
+        softAssert.assertEquals(coupling.efferentCoupling(design), new Integer(14), "\n design Ce: ");
         softAssert.assertAll();
     }
 
@@ -86,7 +86,7 @@ public class EfferentCouplingMetricTest {
         //TODO A herança de AbstractEntity não foi contata pela ferramenta ckjm
         softAssert.assertTrue(directRelatedEntities.contains(abstractEntity));
         //softAssert.assertEquals(coupling.efferentCoupling(packageNode), 7, "\nCe: ");
-        softAssert.assertEquals(coupling.efferentCoupling(packageNode), 8, "\n packageNode Ce: ");
+        softAssert.assertEquals(coupling.efferentCoupling(packageNode), new Integer(8), "\n packageNode Ce: ");
         softAssert.assertAll();
     }
 
@@ -94,7 +94,7 @@ public class EfferentCouplingMetricTest {
         Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classNode);
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode), "field: ");
         softAssert.assertTrue(directRelatedEntities.contains(methodNode), "method: ");
-        softAssert.assertEquals(coupling.efferentCoupling(classNode), 11, "\n classNode Ce: ");
+        softAssert.assertEquals(coupling.efferentCoupling(classNode), new Integer(11), "\n classNode Ce: ");
         softAssert.assertAll();
     }
 
@@ -109,7 +109,7 @@ public class EfferentCouplingMetricTest {
         // Este método retorna um Set<FieldNode> e aparentemente o DesignWizard não extrai esse tipo de informação
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode), "field: ");
         softAssert.assertTrue(directRelatedEntities.contains(relation), "relation: ");
-        softAssert.assertEquals(coupling.efferentCoupling(methodNode), 11, "\n methodNode Ce: ");
+        softAssert.assertEquals(coupling.efferentCoupling(methodNode), new Integer(11), "\n methodNode Ce: ");
         softAssert.assertAll();
     }
 
@@ -117,7 +117,7 @@ public class EfferentCouplingMetricTest {
         Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(fieldNode);
         softAssert.assertTrue(directRelatedEntities.contains(classNode));
         softAssert.assertTrue(directRelatedEntities.contains(relation));
-        softAssert.assertEquals(coupling.efferentCoupling(fieldNode), 9, "\n fieldNode Ce: ");
+        softAssert.assertEquals(coupling.efferentCoupling(fieldNode), new Integer(9), "\n fieldNode Ce: ");
         softAssert.assertAll();
     }
 }
