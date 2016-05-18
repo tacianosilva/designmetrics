@@ -11,12 +11,14 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
+import br.edu.ufcg.splab.designmetrics.metrics.EfferentCouplingMetric;
 
 @Test
 public class EfferentCouplingMetricTest {
 
     private SoftAssert softAssert;
     private DesignWizard designWizard;
+    private EfferentCouplingMetric ceMetric;
     private Coupling coupling;
 
     private ClassNode designIF;
@@ -33,6 +35,7 @@ public class EfferentCouplingMetricTest {
         // Design for all classes in the project.
         // Add here binary code or jar file of the project.
         designWizard = new DesignWizard("../designwizard/classes/org/designwizard/");
+        ceMetric = new EfferentCouplingMetric(designWizard);
         coupling = new Coupling(designWizard);
 
         designIF = designWizard.getClass("org.designwizard.design.DesignIF");
@@ -55,7 +58,7 @@ public class EfferentCouplingMetricTest {
     }
 
     public void testCeDesignIF() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(designIF);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(designIF);
         softAssert.assertTrue(directRelatedEntities.contains(packageNode), "package: ");
         softAssert.assertTrue(directRelatedEntities.contains(classNode), "class: ");
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode), "field: ");
@@ -65,7 +68,7 @@ public class EfferentCouplingMetricTest {
     }
 
     public void testCeDesign() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(design);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(design);
         softAssert.assertTrue(directRelatedEntities.contains(packageNode));
         softAssert.assertTrue(directRelatedEntities.contains(classNode));
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode));
@@ -76,7 +79,7 @@ public class EfferentCouplingMetricTest {
     }
 
     public void testCePackageNode() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(packageNode);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(packageNode);
         for (ClassNode node : directRelatedEntities) {
             System.out.println("PackageNode: " +  node.getName());
         }
@@ -91,7 +94,7 @@ public class EfferentCouplingMetricTest {
     }
 
     public void testCeClassNode() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classNode);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classNode);
         softAssert.assertTrue(directRelatedEntities.contains(fieldNode), "field: ");
         softAssert.assertTrue(directRelatedEntities.contains(methodNode), "method: ");
         softAssert.assertEquals(coupling.efferentCoupling(classNode), new Integer(11), "\n classNode Ce: ");
@@ -99,7 +102,7 @@ public class EfferentCouplingMetricTest {
     }
 
     public void testCeMethodNode() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(methodNode);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(methodNode);
         for (ClassNode node : directRelatedEntities) {
             System.out.println("MethodNode: " +  node.getName());
         }
@@ -114,7 +117,7 @@ public class EfferentCouplingMetricTest {
     }
 
     public void testCeFieldNode() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(fieldNode);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(fieldNode);
         softAssert.assertTrue(directRelatedEntities.contains(classNode));
         softAssert.assertTrue(directRelatedEntities.contains(relation));
         softAssert.assertEquals(coupling.efferentCoupling(fieldNode), new Integer(9), "\n fieldNode Ce: ");

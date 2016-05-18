@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
+import br.edu.ufcg.splab.designmetrics.metrics.EfferentCouplingMetric;
 
 /**
  * Test class with the verification of design rules recommended by the hibernate for persistent classes.
@@ -26,8 +27,8 @@ import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
  *  CBO: Coupling between object classes
  *  RFC: Response for a Class
  *  LCOM: Lack of cohesion in methods
- *  Ca: Afferent coupling (not a C&K metric)
- *  NPM: Number of Public Methods for a class (not a C&K metric)
+ *  Ca: Afferent coupling (not a CK metric)
+ *  NPM: Number of Public Methods for a class (not a CK metric)
  *
  * <code>java -jar ~/dev/ckjm-1.9/build/ckjm-1.9.jar *.class</code>
  *
@@ -45,6 +46,8 @@ import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
  * br.edu.ufcg.splab.designmetrics.mocks.ClassK   2   1   0   2   4    1   0   2
  * br.edu.ufcg.splab.designmetrics.mocks.ClassL   3   1   0   3   9    4   1   4
  * br.edu.ufcg.splab.designmetrics.mocks.ClassM   3   1   0   3   6    3   0   3
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassN   1   0   0   1   2    0   0   1
+ * br.edu.ufcg.splab.designmetrics.mocks.ClassO   1   0   0   1   2    0   0   1
  *
  * @author Taciano Morais Silva - tacianosilva@gmail.com
  */
@@ -53,6 +56,7 @@ public class EfferentCouplingTest {
 
     private SoftAssert softAssert;
     private DesignWizard designWizard;
+    private EfferentCouplingMetric ceMetric;
     private Coupling coupling;
 
     private ClassNode classA;
@@ -68,12 +72,16 @@ public class EfferentCouplingTest {
     private ClassNode classK;
     private ClassNode classL;
     private ClassNode classM;
+    private ClassNode classN;
+    private ClassNode classO;
+    private ClassNode classP;
 
     @BeforeClass
     public void setUp() throws Exception {
         // Design for all classes in the project.
         // Add here binary code or jar file of the project.
         designWizard = new DesignWizard("target/test-classes/br/edu/ufcg/splab/designmetrics/mocks/");
+        ceMetric = new EfferentCouplingMetric(designWizard);
         coupling = new Coupling(designWizard);
 
         // Classe Vazia
@@ -113,6 +121,14 @@ public class EfferentCouplingTest {
         classL = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassL");
 
         classM = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassM");
+
+        // Herança da classe M com métodos e atributos
+        classN = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassN");
+
+        // Herança da classe A sem métodos e sem atributos.
+        classO = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassO");
+
+        classP = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassP");
     }
 
     @BeforeMethod
@@ -127,7 +143,7 @@ public class EfferentCouplingTest {
     /**
      */
     public void testCeClassA() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classA);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classA);
 
         softAssert.assertEquals(coupling.efferentCoupling(classA), new Integer(0), "\nCe: ");
         softAssert.assertEquals(directRelatedEntities.size(), 0);
@@ -135,14 +151,14 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassB() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classB);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classB);
         softAssert.assertTrue(directRelatedEntities.contains(classA));
         softAssert.assertEquals(coupling.efferentCoupling(classB), new Integer(1), "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassC() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classC);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classC);
         softAssert.assertTrue(directRelatedEntities.contains(classA));
         softAssert.assertTrue(directRelatedEntities.contains(classB));
         softAssert.assertEquals(coupling.efferentCoupling(classC), new Integer(2), "\nCe: ");
@@ -150,21 +166,21 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassD() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classD);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classD);
         softAssert.assertTrue(directRelatedEntities.contains(classC));
         softAssert.assertEquals(coupling.efferentCoupling(classD), new Integer(1), "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassE() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classE);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classE);
         softAssert.assertTrue(directRelatedEntities.contains(classC));
         softAssert.assertEquals(coupling.efferentCoupling(classE), new Integer(1), "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassF() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classF);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classF);
         softAssert.assertTrue(directRelatedEntities.contains(classD));
         softAssert.assertTrue(directRelatedEntities.contains(classE));
         softAssert.assertEquals(coupling.efferentCoupling(classF), new Integer(2), "\nCe: ");
@@ -172,14 +188,14 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassG() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classG);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classG);
         softAssert.assertTrue(directRelatedEntities.contains(classF));
         softAssert.assertEquals(coupling.efferentCoupling(classG), new Integer(1), "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassH() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classH);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classH);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertEquals(coupling.efferentCoupling(classH), new Integer(2), "\nCe: ");
@@ -187,7 +203,7 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassI() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classI);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classI);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertTrue(directRelatedEntities.contains(classE), "\nClassE");
@@ -196,21 +212,21 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassJ() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classJ);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classJ);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertEquals(coupling.efferentCoupling(classJ), new Integer(1), "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassK() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classK);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classK);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertEquals(coupling.efferentCoupling(classK), new Integer(2), "\nCe: ");
         softAssert.assertAll();
     }
 
     public void testCeClassL() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classL);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classL);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertTrue(directRelatedEntities.contains(classE), "\nClassE");
@@ -219,11 +235,38 @@ public class EfferentCouplingTest {
     }
 
     public void testCeClassM() {
-        Set<ClassNode> directRelatedEntities = coupling.getRelatedEntities(classM);
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classM);
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertTrue(directRelatedEntities.contains(classL), "\nClassL");
         softAssert.assertEquals(coupling.efferentCoupling(classM), new Integer(3), "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassN() {
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classN);
+        softAssert.assertTrue(directRelatedEntities.contains(classM), "\nClassM");
+        softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
+        softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
+        softAssert.assertTrue(directRelatedEntities.contains(classL), "\nClassL");
+        //TODO o ckjm retorns CBO = 1
+        softAssert.assertEquals(coupling.efferentCoupling(classN), new Integer(4), "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeClassO() {
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classO);
+        softAssert.assertTrue(directRelatedEntities.contains(classA), "\nClassA");
+        softAssert.assertEquals(coupling.efferentCoupling(classO), new Integer(1), "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    @Test(enabled=false)
+    public void testCeClassP() {
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classP);
+        softAssert.assertTrue(directRelatedEntities.contains(classA), "\nClassA");
+        softAssert.assertTrue(directRelatedEntities.contains(classB), "\nClassB");
+        softAssert.assertEquals(coupling.efferentCoupling(classP), new Integer(2), "\nCe: ");
         softAssert.assertAll();
     }
 }
