@@ -7,6 +7,30 @@
     <name>Design Metrics</name>
     <description>Implementing Design Metrics using the DesignWizard API</description>
 
+    <issueManagement>
+        <url>https://github.com/tacianosilva/designmetrics/issues</url>
+        <system>GitHub</system>
+    </issueManagement>
+
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/tacianosilva/designtmetrics</url>
+    </ciManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/tacianosilva/designmetrics</url>
+        <connection>scm:git:https://github.com/tacianosilva/designmetrics.git</connection>
+        <developerConnection>scm:git:git@github.com:tacianosilva/designmetrics.git</developerConnection>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
