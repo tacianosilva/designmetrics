@@ -1,5 +1,6 @@
 package br.edu.ufcg.splab.designmetrics;
 
+import java.io.IOException;
 import java.util.Set;
 
 import org.designwizard.api.DesignWizard;
@@ -140,6 +141,29 @@ public class EfferentCouplingTest {
     public void tearDown() throws Exception {
     }
 
+    public void testCeNull() {
+        softAssert.assertEquals(coupling.efferentCoupling(null), new Integer(0), "\nCe: ");
+        softAssert.assertAll();
+    }
+
+    public void testCeEntityNotExist() {
+        ClassNode classNotExist = new ClassNode("br.edu.ufcg.splab.designmetrics.mocks.ClassNotExist");
+        softAssert.assertEquals(coupling.efferentCoupling(classNotExist), new Integer(0), "\nCe: ");
+
+        ClassNode classNotInDesign = new ClassNode("java.util.Scanner");
+        softAssert.assertEquals(coupling.efferentCoupling(classNotInDesign), new Integer(0), "\nCe: ");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeMetric() throws IOException {
+        ceMetric = new EfferentCouplingMetric(null);
+
+        softAssert.assertEquals(ceMetric.calculate(classA), new Integer(0), "\nCe: ");
+
+        softAssert.assertAll();
+    }
+
     /**
      */
     public void testCeClassA() {
@@ -261,7 +285,6 @@ public class EfferentCouplingTest {
         softAssert.assertAll();
     }
 
-    @Test(enabled=false)
     public void testCeClassP() {
         Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classP);
         softAssert.assertTrue(directRelatedEntities.contains(classA), "\nClassA");

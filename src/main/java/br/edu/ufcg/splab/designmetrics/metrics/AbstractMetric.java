@@ -10,6 +10,8 @@ import org.designwizard.design.MethodNode;
 
 public abstract class AbstractMetric implements Metric {
 
+    private static final String OBJECT_CLASS_NAME = "java.lang.Object";
+
     private DesignWizard designwizard;
 
     public AbstractMetric(DesignWizard designWizard) {
@@ -108,14 +110,14 @@ public abstract class AbstractMetric implements Metric {
     }
 
     private boolean isInTheDesign(ClassNode classNode) {
-        if (this.designwizard == null || designwizard.getAllClasses() == null) {
+        if (this.designwizard == null) {
             return false;
         }
         return designwizard.getAllClasses().contains(classNode);
     }
 
     private boolean isNewRelatedClass(ClassNode classNode, ClassNode newClass) {
-        if (newClass != null && !newClass.equals(classNode) && !newClass.getClassName().equals("java.lang.Object")
+        if (newClass != null && !newClass.equals(classNode) && !OBJECT_CLASS_NAME.equals(newClass.getClassName())
                 && isInTheDesign(newClass)) {
             return true;
         }
