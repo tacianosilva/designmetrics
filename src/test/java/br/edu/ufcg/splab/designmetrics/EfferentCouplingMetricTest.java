@@ -32,9 +32,12 @@ public class EfferentCouplingMetricTest {
 
     @BeforeClass
     public void setUp() throws Exception {
+
+        String home = System.getProperty("user.home");
         // Design for all classes in the project.
         // Add here binary code or jar file of the project.
-        designWizard = new DesignWizard("../designwizard/classes/org/designwizard/");
+        designWizard = new DesignWizard(home + "/.m2/repository/org/designwizard/designwizard/1.5-SNAPSHOT/"
+                + "designwizard-1.5-SNAPSHOT.jar");
         ceMetric = new EfferentCouplingMetric(designWizard);
         coupling = new Coupling(designWizard);
 
