@@ -40,7 +40,7 @@
         <repository>
             <id>myrepo</id>
             <name>My Public Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
