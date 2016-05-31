@@ -42,10 +42,12 @@
             <name>My Public Repository</name>
             <url>https://oss.sonatype.org/content/groups/public</url>
             <releases>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
+                <updatePolicy>daily</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
     </repositories>
