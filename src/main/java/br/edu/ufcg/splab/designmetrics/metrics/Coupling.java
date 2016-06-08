@@ -5,20 +5,24 @@ import org.designwizard.design.ClassNode;
 
 public class Coupling {
 
-    private DesignWizard designwizard;
+    private EfferentCouplingMetric ceMetric;
+    private AfferentCouplingMetric caMetric;
 
-    public Coupling(DesignWizard designWizard) {
+    public Coupling(DesignWizard designwizard) {
         // Design for all classes in the project.
-        this.designwizard = designWizard;
+        this.ceMetric = new EfferentCouplingMetric(designwizard);
+        this.caMetric = new AfferentCouplingMetric(designwizard);
     }
 
     public Integer efferentCoupling(ClassNode node) {
-        Metric metric = new EfferentCouplingMetric(this.designwizard);
-        return metric.calculate(node);
+        return ceMetric.calculate(node);
     }
 
     public Integer afferentCoupling(ClassNode node) {
-        Metric metric = new AfferentCouplingMetric(this.designwizard);
-        return metric.calculate(node);
+        return caMetric.calculate(node);
+    }
+
+    public Integer efferentCoupling() {
+        return ceMetric.calculate();
     }
 }

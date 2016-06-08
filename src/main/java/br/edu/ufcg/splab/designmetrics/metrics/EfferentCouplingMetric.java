@@ -1,5 +1,7 @@
 package br.edu.ufcg.splab.designmetrics.metrics;
 
+import java.util.Set;
+
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 
@@ -33,5 +35,21 @@ public class EfferentCouplingMetric extends AbstractMetric {
             return 0;
         }
         return getRelatedEntities(classNode).size();
+    }
+
+    public Integer calculate(ClassNode classNodeA, ClassNode classNodeB) {
+        if (classNodeA == null || classNodeB == null) {
+            return 0;
+        }
+        return intersectionRelatedEntities(classNodeA, classNodeB).size();
+    }
+
+    public Integer calculate() {
+        int total = 0;
+        Set<ClassNode> classes = getAllClasses();
+        for (ClassNode classNode : classes) {
+            total += calculate(classNode);
+        }
+        return total;
     }
 }
