@@ -184,10 +184,14 @@ public abstract class AbstractMetric implements Metric {
     }
 
     private boolean isInTheDesign(ClassNode classNode) {
+        return getAllClasses().contains(classNode);
+    }
+
+    protected Set<ClassNode> getAllClasses() {
         if (this.designwizard == null) {
-            return false;
+            return new HashSet<>();
         }
-        return designwizard.getAllClasses().contains(classNode);
+        return designwizard.getAllClasses();
     }
 
     private boolean isNewRelatedClass(ClassNode classNode, ClassNode newClass) {
@@ -196,5 +200,32 @@ public abstract class AbstractMetric implements Metric {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Returns the intersection set from Related Entities for two ClassNodes.
+     * @param classNodeA A classNode of the design.
+     * @param classNodeB A classNode of the design.
+     * @return A set with the intersection of the related entities for two ClassNodes or empty set.
+     */
+    public Set<ClassNode> intersectionRelatedEntities(ClassNode classNodeA, ClassNode classNodeB) {
+        Set<ClassNode> relatedA = getRelatedEntities(classNodeA);
+        Set<ClassNode> relatedB = getRelatedEntities(classNodeB);
+
+        return intersection(relatedA, relatedB);
+    }
+
+    // método genérico que permite obter a interseção de dois conjuntos
+    private <T> Set<T> intersection(Set<T> conjA, Set<T> conjB) {
+        Set<T> conjC = new HashSet<>();
+        // percorremos todos os elementos do conjunto A
+        for (T elemento : conjA) {
+            // e verificamos se o elemento está contido no conjunto B
+            if (conjB.contains(elemento)) {
+                conjC.add(elemento); // se estiver contido nós o adicionamos no
+                                        // conjunto C
+            }
+        }
+        return conjC; // e retornamos o conjunto C
     }
 }
