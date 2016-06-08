@@ -25,4 +25,14 @@ public class Coupling {
     public Integer efferentCoupling() {
         return ceMetric.calculate();
     }
+ 
+    public Double instability(ClassNode node) {
+    	Double instabilityMetric = 0.0;
+    	Double efferent = (double) efferentCoupling(node);
+    	Double afferent = (double) afferentCoupling(node);
+    	if (efferentCoupling(node) != 0) {
+    		instabilityMetric = efferent / (efferent + afferent); 
+    	}
+    	return instabilityMetric;
+    }
 }
