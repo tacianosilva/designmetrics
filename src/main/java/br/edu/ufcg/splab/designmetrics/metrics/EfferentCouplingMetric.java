@@ -3,6 +3,12 @@ package br.edu.ufcg.splab.designmetrics.metrics;
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 
+/**
+ * Class to calculate Afferent Coupling (Ce) is the number of methods declared in one class use methods or
+ * instance variables defined by the other class. The uses relationship can go either way:
+ * both uses and used-by relationships are taken into account, but only once. {@link DesignWizard}.
+ * @author Taciano Morais Silva - tacianosilva@gmail.com
+ */
 public class EfferentCouplingMetric extends AbstractMetric {
 
     public EfferentCouplingMetric(DesignWizard designwizard) {

@@ -83,9 +83,6 @@ public class EfferentCouplingMetricTest {
 
     public void testCePackageNode() {
         Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(packageNode);
-        for (ClassNode node : directRelatedEntities) {
-            System.out.println("PackageNode: " +  node.getName());
-        }
         softAssert.assertTrue(directRelatedEntities.contains(classNode));
         softAssert.assertTrue(directRelatedEntities.contains(methodNode));
 
@@ -106,9 +103,6 @@ public class EfferentCouplingMetricTest {
 
     public void testCeMethodNode() {
         Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(methodNode);
-        for (ClassNode node : directRelatedEntities) {
-            System.out.println("MethodNode: " +  node.getName());
-        }
         softAssert.assertTrue(directRelatedEntities.contains(classNode), "class: ");
 
         //TODO Não encontra o FieldNode, pois o único método que acessa é o MethodNode.getAccessedFields()
