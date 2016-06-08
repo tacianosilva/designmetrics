@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.edu.ufcg.splab</groupId>
     <artifactId>designmetrics</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>Design Metrics</name>
     <description>Implementing Design Metrics using the DesignWizard API</description>
 

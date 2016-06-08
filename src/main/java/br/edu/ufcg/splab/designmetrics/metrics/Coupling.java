@@ -15,6 +15,10 @@ public class Coupling {
     public Integer efferentCoupling(ClassNode node) {
         Metric metric = new EfferentCouplingMetric(this.designwizard);
         return metric.calculate(node);
+    }
 
+    public Integer afferentCoupling(ClassNode node) {
+        Metric metric = new AfferentCouplingMetric(this.designwizard);
+        return metric.calculate(node);
     }
 }
