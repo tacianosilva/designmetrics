@@ -203,16 +203,27 @@ public abstract class AbstractMetric implements Metric {
     }
 
     /**
-     * Returns the intersection set from Related Entities for two ClassNodes.
+     * Returns the dependencies set from related Entities for two ClassNodes.
      * @param classNodeA A classNode of the design.
      * @param classNodeB A classNode of the design.
      * @return A set with the intersection of the related entities for two ClassNodes or empty set.
      */
-    public Set<ClassNode> intersectionRelatedEntities(ClassNode classNodeA, ClassNode classNodeB) {
+    public Set<ClassNode> dependenciesBetweenEntities(ClassNode classNodeA, ClassNode classNodeB) {
+        Set<ClassNode> dependencies = new HashSet<>();
+
         Set<ClassNode> relatedA = getRelatedEntities(classNodeA);
         Set<ClassNode> relatedB = getRelatedEntities(classNodeB);
 
-        return intersection(relatedA, relatedB);
+        if (relatedA.contains(classNodeB)) {
+            dependencies.add(classNodeB);
+        }
+        if (relatedB.contains(classNodeA)) {
+            dependencies.add(classNodeA);
+        }
+
+        dependencies.addAll(intersection(relatedA, relatedB));
+
+        return dependencies;
     }
 
     // método genérico que permite obter a interseção de dois conjuntos

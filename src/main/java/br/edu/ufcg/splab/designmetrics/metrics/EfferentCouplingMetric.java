@@ -38,10 +38,10 @@ public class EfferentCouplingMetric extends AbstractMetric {
     }
 
     public Integer calculate(ClassNode classNodeA, ClassNode classNodeB) {
-        if (classNodeA == null || classNodeB == null) {
+        if (classNodeA == null || classNodeB == null || classNodeA.equals(classNodeB)) {
             return 0;
         }
-        return intersectionRelatedEntities(classNodeA, classNodeB).size();
+        return dependenciesBetweenEntities(classNodeA, classNodeB).size();
     }
 
     public Integer calculate() {

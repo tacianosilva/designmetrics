@@ -1,4 +1,4 @@
-package br.edu.ufcg.splab.designmetrics.mocks;
+package br.edu.ufcg.splab.designmetrics.mocks.cbo1;
 
 import java.util.HashSet;
 import java.util.Set;
