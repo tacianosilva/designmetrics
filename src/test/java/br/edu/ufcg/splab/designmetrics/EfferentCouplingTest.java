@@ -81,55 +81,55 @@ public class EfferentCouplingTest {
     public void setUp() throws Exception {
         // Design for all classes in the project.
         // Add here binary code or jar file of the project.
-        designWizard = new DesignWizard("target/test-classes/br/edu/ufcg/splab/designmetrics/mocks/");
+        designWizard = new DesignWizard("target/test-classes/br/edu/ufcg/splab/designmetrics/mocks/cbo1/");
         ceMetric = new EfferentCouplingMetric(designWizard);
         coupling = new Coupling(designWizard);
 
         // Classe Vazia
-        classA = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassA");
+        classA = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassA");
 
         // Classe com um atributo da Classe A
-        classB = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassB");
+        classB = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassB");
 
         // Classe com dois atributos da Classe A e Classe B
-        classC = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassC");
+        classC = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassC");
 
         // Classe com dois atributos da Classe C
-        classD = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassD");
+        classD = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassD");
 
         // Classe com um atributo da Classe C e métodos get e set para o atributo
-        classE = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassE");
+        classE = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassE");
 
         // Classe com vários atributos da Classe D e Classe E com gets e sets. Além de atributos de tipos primitivos.
-        classF = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassF");
+        classF = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassF");
 
         // Classe com um atributo da Classe E e faz chamada a um método de tipo primitivo
-        classG = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassG");
+        classG = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassG");
 
         // Classe com um atributo da Classe F e faz chamada a dois método do tipo Classe D
-        classH = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassH");
+        classH = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassH");
 
         // Classe com um atributo da Classe F e faz chamada a três método do tipo Classe D e Classe E
-        classI = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassI");
+        classI = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassI");
 
         // Classe com um atributo da Classe F e faz chamada a um método com parâmetros do tipo Classe D
-        classJ = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassJ");
+        classJ = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassJ");
 
         // Classe com um atributo da Classe F e faz chamada a um método com parâmetros do tipo Classe D (variável local)
-        classK = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassK");
+        classK = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassK");
 
         // TODO Testar se é o parâmetro ou a variável local que configura o acoplamento
-        classL = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassL");
+        classL = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassL");
 
-        classM = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassM");
+        classM = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassM");
 
         // Herança da classe M com métodos e atributos
-        classN = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassN");
+        classN = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassN");
 
         // Herança da classe A sem métodos e sem atributos.
-        classO = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassO");
+        classO = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassO");
 
-        classP = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.ClassP");
+        classP = designWizard.getClass("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassP");
     }
 
     @BeforeMethod
@@ -139,6 +139,11 @@ public class EfferentCouplingTest {
 
     @AfterClass
     public void tearDown() throws Exception {
+    }
+
+    public void testCeTotal() {
+        softAssert.assertEquals(coupling.efferentCoupling(), new Integer(29), "\nCe Total: ");
+        softAssert.assertAll();
     }
 
     public void testCeNull() {
@@ -273,7 +278,7 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertTrue(directRelatedEntities.contains(classL), "\nClassL");
-        //TODO o ckjm retorns CBO = 1
+        //TODO o ckjm retorns CBO = 1 because extends?
         softAssert.assertEquals(coupling.efferentCoupling(classN), new Integer(4), "\nCe: ");
         softAssert.assertAll();
     }
