@@ -141,6 +141,11 @@ public class EfferentCouplingTest {
     public void tearDown() throws Exception {
     }
 
+    public void testCeTotal() {
+        softAssert.assertEquals(coupling.efferentCoupling(), new Integer(29), "\nCe Total: ");
+        softAssert.assertAll();
+    }
+
     public void testCeNull() {
         softAssert.assertEquals(coupling.efferentCoupling(null), new Integer(0), "\nCe: ");
         softAssert.assertAll();
@@ -273,7 +278,7 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertTrue(directRelatedEntities.contains(classL), "\nClassL");
-        //TODO o ckjm retorns CBO = 1
+        //TODO o ckjm retorns CBO = 1 because extends?
         softAssert.assertEquals(coupling.efferentCoupling(classN), new Integer(4), "\nCe: ");
         softAssert.assertAll();
     }
