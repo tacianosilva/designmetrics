@@ -7,6 +7,7 @@ import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.FieldNode;
 import org.designwizard.design.MethodNode;
+import org.designwizard.exception.InexistentEntityException;
 
 public abstract class AbstractMetric implements Metric {
 
@@ -222,6 +223,63 @@ public abstract class AbstractMetric implements Metric {
         }
 
         dependencies.addAll(intersection(relatedA, relatedB));
+
+        return dependencies;
+    }
+
+    /**
+     * Returns the dependencies set from related methods for two ClassNodes.
+     * @param classNodeA A classNode of the design.
+     * @param classNodeB A classNode of the design.
+     * @return A set with the related methods for two ClassNodes or empty set.
+     */
+    public Set<MethodNode> methodDependenciesBetweenEntities(ClassNode classNodeA, ClassNode classNodeB) {
+        Set<MethodNode> dependencies = new HashSet<>();
+
+        Set<MethodNode> calleesA = classNodeA.getCalleeMethods();
+        Set<MethodNode> calleesB = classNodeB.getCalleeMethods();
+
+        for (MethodNode methodNode : calleesA) {
+            if (classNodeB.equals(methodNode.getDeclaringClass())) {
+                System.out.println(classNodeA.getShortName() + " call " + classNodeB.getShortName() + " Method: " + methodNode.getName());
+                dependencies.add(methodNode);
+            }
+        }
+
+        for (MethodNode methodNode : calleesB) {
+            if (classNodeA.equals(methodNode.getDeclaringClass())) {
+                System.out.println(classNodeB.getShortName() + " call " + classNodeA.getShortName() + " Method: " + methodNode.getName());
+                dependencies.add(methodNode);
+            }
+        }
+
+        // Fields Declared
+        Set<ClassNode> fieldsA = getFieldDeclaredEntities(classNodeA);
+        Set<ClassNode> fieldsB = getFieldDeclaredEntities(classNodeB);
+
+        if (fieldsA.contains(classNodeB)) {
+            if (classNodeB.getConstructors().contains(new MethodNode(classNodeB.getName() + ".<init>()", true))) {
+                System.out.println(classNodeA.getShortName() + " declare " + classNodeB.getShortName());
+                try {
+                    dependencies.add(designwizard.getMethod(classNodeB.getName() + ".<init>()"));
+                } catch (InexistentEntityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (fieldsB.contains(classNodeA)) {
+            if (classNodeA.getConstructors().contains(new MethodNode(classNodeA.getName() + ".<init>()", true))) {
+                System.out.println(classNodeB.getShortName() + " declare " + classNodeA.getShortName());
+                try {
+                    dependencies.add(designwizard.getMethod(classNodeA.getName() + ".<init>()"));
+                } catch (InexistentEntityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
 
         return dependencies;
     }
