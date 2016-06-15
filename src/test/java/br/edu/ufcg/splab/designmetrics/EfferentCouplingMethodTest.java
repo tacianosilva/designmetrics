@@ -331,4 +331,144 @@ public class EfferentCouplingMethodTest {
 
         softAssert.assertAll();
     }
+
+    public void testCeClassJ() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classA), new Integer(0), "\nCe: J <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classB), new Integer(0), "\nCe: J <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classC), new Integer(0), "\nCe: J <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classD), new Integer(0), "\nCe: J <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classE), new Integer(0), "\nCe: J <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classF), new Integer(2), "\nCe: J <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classG), new Integer(0), "\nCe: J <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classH), new Integer(0), "\nCe: J <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classI), new Integer(0), "\nCe: J <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classK), new Integer(0), "\nCe: J <--> K?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classL), new Integer(0), "\nCe: J <--> L?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classM), new Integer(0), "\nCe: J <--> M?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classN), new Integer(0), "\nCe: J <--> N?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classO), new Integer(0), "\nCe: J <--> O?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classJ, classP), new Integer(0), "\nCe: J <--> P?");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeClassK() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classA), new Integer(0), "\nCe: K <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classB), new Integer(0), "\nCe: K <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classC), new Integer(0), "\nCe: K <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classD), new Integer(0), "\nCe: K <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classE), new Integer(0), "\nCe: K <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classF), new Integer(2), "\nCe: K <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classG), new Integer(0), "\nCe: K <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classH), new Integer(0), "\nCe: K <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classI), new Integer(0), "\nCe: K <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classJ), new Integer(0), "\nCe: K <--> J?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classL), new Integer(0), "\nCe: K <--> L?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classM), new Integer(0), "\nCe: K <--> M?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classN), new Integer(0), "\nCe: K <--> N?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classO), new Integer(0), "\nCe: K <--> O?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classK, classP), new Integer(0), "\nCe: K <--> P?");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeClassL() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classA), new Integer(0), "\nCe: L <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classB), new Integer(0), "\nCe: L <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classC), new Integer(0), "\nCe: L <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classD), new Integer(1), "\nCe: L <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classE), new Integer(1), "\nCe: L <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classF), new Integer(3), "\nCe: L <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classG), new Integer(0), "\nCe: L <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classH), new Integer(0), "\nCe: L <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classI), new Integer(0), "\nCe: L <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classJ), new Integer(0), "\nCe: L <--> J?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classK), new Integer(0), "\nCe: L <--> K?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classM), new Integer(2), "\nCe: L <--> M?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classN), new Integer(2), "\nCe: L <--> N?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classO), new Integer(0), "\nCe: L <--> O?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classL, classP), new Integer(0), "\nCe: L <--> P?");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeClassM() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classA), new Integer(0), "\nCe: M <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classB), new Integer(0), "\nCe: M <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classC), new Integer(0), "\nCe: M <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classD), new Integer(0), "\nCe: M <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classE), new Integer(0), "\nCe: M <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classF), new Integer(2), "\nCe: M <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classG), new Integer(0), "\nCe: M <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classH), new Integer(0), "\nCe: M <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classI), new Integer(0), "\nCe: M <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classJ), new Integer(0), "\nCe: M <--> J?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classK), new Integer(0), "\nCe: M <--> K?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classL), new Integer(2), "\nCe: M <--> L?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classN), new Integer(1), "\nCe: M <--> N?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classO), new Integer(0), "\nCe: M <--> O?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classM, classP), new Integer(0), "\nCe: M <--> P?");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeClassN() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classA), new Integer(0), "\nCe: N <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classB), new Integer(0), "\nCe: N <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classC), new Integer(0), "\nCe: N <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classD), new Integer(0), "\nCe: N <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classE), new Integer(0), "\nCe: N <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classF), new Integer(2), "\nCe: N <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classG), new Integer(0), "\nCe: N <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classH), new Integer(0), "\nCe: N <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classI), new Integer(0), "\nCe: N <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classJ), new Integer(0), "\nCe: N <--> J?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classK), new Integer(0), "\nCe: N <--> K?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classL), new Integer(2), "\nCe: N <--> L?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classM), new Integer(1), "\nCe: N <--> M?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classO), new Integer(0), "\nCe: N <--> O?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classN, classP), new Integer(0), "\nCe: N <--> P?");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeClassO() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classA), new Integer(1), "\nCe: O <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classB), new Integer(0), "\nCe: O <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classC), new Integer(0), "\nCe: O <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classD), new Integer(0), "\nCe: O <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classE), new Integer(0), "\nCe: O <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classF), new Integer(0), "\nCe: O <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classG), new Integer(0), "\nCe: O <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classH), new Integer(0), "\nCe: O <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classI), new Integer(0), "\nCe: O <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classJ), new Integer(0), "\nCe: O <--> J?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classK), new Integer(0), "\nCe: O <--> K?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classL), new Integer(0), "\nCe: O <--> L?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classM), new Integer(0), "\nCe: O <--> M?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classN), new Integer(0), "\nCe: O <--> N?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classO, classP), new Integer(0), "\nCe: O <--> P?");
+
+        softAssert.assertAll();
+    }
+
+    public void testCeClassP() {
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classA), new Integer(0), "\nCe: P <--> A?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classB), new Integer(0), "\nCe: P <--> B?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classC), new Integer(0), "\nCe: P <--> C?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classD), new Integer(0), "\nCe: P <--> D?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classE), new Integer(0), "\nCe: P <--> E?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classF), new Integer(0), "\nCe: P <--> F?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classG), new Integer(0), "\nCe: P <--> G?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classH), new Integer(0), "\nCe: P <--> H?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classI), new Integer(0), "\nCe: P <--> I?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classJ), new Integer(0), "\nCe: P <--> J?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classK), new Integer(0), "\nCe: P <--> K?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classL), new Integer(0), "\nCe: P <--> L?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classM), new Integer(0), "\nCe: P <--> M?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classN), new Integer(0), "\nCe: P <--> N?");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classP, classO), new Integer(0), "\nCe: P <--> O?");
+
+        softAssert.assertAll();
+    }
 }
