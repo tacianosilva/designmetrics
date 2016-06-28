@@ -226,6 +226,52 @@ public abstract class AbstractMetric implements Metric {
         return dependencies;
     }
 
+    /**
+     * Returns the dependencies set from related methods for two ClassNodes.
+     * @param classNodeA A classNode of the design.
+     * @param classNodeB A classNode of the design.
+     * @return A set with the related methods for two ClassNodes or empty set.
+     */
+    public Set<MethodNode> methodDependenciesBetweenEntities(ClassNode classNodeA, ClassNode classNodeB) {
+        Set<MethodNode> dependencies = new HashSet<>();
+
+        Set<MethodNode> calleesA = classNodeA.getCalleeMethods();
+        Set<MethodNode> calleesB = classNodeB.getCalleeMethods();
+
+        for (MethodNode methodNode : calleesA) {
+            if (classNodeB.equals(methodNode.getDeclaringClass())) {
+                dependencies.add(methodNode);
+            }
+        }
+
+        for (MethodNode methodNode : calleesB) {
+            if (classNodeA.equals(methodNode.getDeclaringClass())) {
+                dependencies.add(methodNode);
+            }
+        }
+
+        // Fields Declared
+        Set<ClassNode> fieldsA = getFieldDeclaredEntities(classNodeA);
+        Set<ClassNode> fieldsB = getFieldDeclaredEntities(classNodeB);
+
+        // Add a constructor method to represent coupling.
+        if (fieldsA.contains(classNodeB)) {
+            Set<MethodNode> constructors = classNodeB.getConstructors();
+            if (constructors != null && !constructors.isEmpty()) {
+                dependencies.add((MethodNode)constructors.toArray()[0]);
+            }
+
+        }
+
+        if (fieldsB.contains(classNodeA)) {
+            Set<MethodNode> constructors = classNodeA.getConstructors();
+            if (constructors != null && !constructors.isEmpty()) {
+                dependencies.add((MethodNode)constructors.toArray()[0]);
+            }
+        }
+        return dependencies;
+    }
+
     // método genérico que permite obter a interseção de dois conjuntos
     private <T> Set<T> intersection(Set<T> conjA, Set<T> conjB) {
         Set<T> conjC = new HashSet<>();

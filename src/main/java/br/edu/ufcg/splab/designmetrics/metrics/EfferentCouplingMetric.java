@@ -52,4 +52,11 @@ public class EfferentCouplingMetric extends AbstractMetric {
         }
         return total;
     }
+
+    public Integer calculateMethodLevel(ClassNode classNodeA, ClassNode classNodeB) {
+        if (classNodeA == null || classNodeB == null || classNodeA.equals(classNodeB)) {
+            return 0;
+        }
+        return methodDependenciesBetweenEntities(classNodeA, classNodeB).size();
+    }
 }

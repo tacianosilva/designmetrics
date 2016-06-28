@@ -17,7 +17,7 @@ import br.edu.ufcg.splab.designmetrics.metrics.EfferentCouplingMetric;
  * @author Taciano Morais Silva - tacianosilva@gmail.com
  */
 @Test
-public class CouplingBetweenClassTest {
+public class EfferentCouplingBetweenClassTest {
 
     private SoftAssert softAssert;
     private DesignWizard designWizard;
