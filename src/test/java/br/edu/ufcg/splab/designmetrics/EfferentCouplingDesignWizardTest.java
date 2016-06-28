@@ -14,7 +14,7 @@ import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
 import br.edu.ufcg.splab.designmetrics.metrics.EfferentCouplingMetric;
 
 @Test
-public class EfferentCouplingMetricTest {
+public class EfferentCouplingDesignWizardTest {
 
     private SoftAssert softAssert;
     private DesignWizard designWizard;

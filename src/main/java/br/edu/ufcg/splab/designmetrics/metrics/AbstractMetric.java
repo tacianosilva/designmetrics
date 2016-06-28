@@ -7,7 +7,6 @@ import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.FieldNode;
 import org.designwizard.design.MethodNode;
-import org.designwizard.exception.InexistentEntityException;
 
 public abstract class AbstractMetric implements Metric {
 
@@ -241,14 +240,12 @@ public abstract class AbstractMetric implements Metric {
 
         for (MethodNode methodNode : calleesA) {
             if (classNodeB.equals(methodNode.getDeclaringClass())) {
-                System.out.println(classNodeA.getShortName() + " call " + classNodeB.getShortName() + " Method: " + methodNode.getName());
                 dependencies.add(methodNode);
             }
         }
 
         for (MethodNode methodNode : calleesB) {
             if (classNodeA.equals(methodNode.getDeclaringClass())) {
-                System.out.println(classNodeB.getShortName() + " call " + classNodeA.getShortName() + " Method: " + methodNode.getName());
                 dependencies.add(methodNode);
             }
         }
@@ -257,30 +254,21 @@ public abstract class AbstractMetric implements Metric {
         Set<ClassNode> fieldsA = getFieldDeclaredEntities(classNodeA);
         Set<ClassNode> fieldsB = getFieldDeclaredEntities(classNodeB);
 
+        // Add a constructor method to represent coupling.
         if (fieldsA.contains(classNodeB)) {
-            if (classNodeB.getConstructors().contains(new MethodNode(classNodeB.getName() + ".<init>()", true))) {
-                System.out.println(classNodeA.getShortName() + " declare " + classNodeB.getShortName());
-                try {
-                    dependencies.add(designwizard.getMethod(classNodeB.getName() + ".<init>()"));
-                } catch (InexistentEntityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+            Set<MethodNode> constructors = classNodeB.getConstructors();
+            if (constructors != null && !constructors.isEmpty()) {
+                dependencies.add((MethodNode)constructors.toArray()[0]);
             }
+
         }
 
         if (fieldsB.contains(classNodeA)) {
-            if (classNodeA.getConstructors().contains(new MethodNode(classNodeA.getName() + ".<init>()", true))) {
-                System.out.println(classNodeB.getShortName() + " declare " + classNodeA.getShortName());
-                try {
-                    dependencies.add(designwizard.getMethod(classNodeA.getName() + ".<init>()"));
-                } catch (InexistentEntityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+            Set<MethodNode> constructors = classNodeA.getConstructors();
+            if (constructors != null && !constructors.isEmpty()) {
+                dependencies.add((MethodNode)constructors.toArray()[0]);
             }
         }
-
         return dependencies;
     }
 
