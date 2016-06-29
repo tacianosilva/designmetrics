@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
+import org.designwizard.design.PackageNode;
 
 /**
  * Class to calculate Afferent Coupling (Ce) is the number of methods declared in one class use methods or
@@ -13,6 +14,10 @@ import org.designwizard.design.ClassNode;
  */
 public class EfferentCouplingMetric extends AbstractMetric {
 
+    /**
+     * Construct the metric for the design parameter.
+     * @param designwizard An instance with the design.
+     */
     public EfferentCouplingMetric(DesignWizard designwizard) {
         super(designwizard);
     }
@@ -37,6 +42,12 @@ public class EfferentCouplingMetric extends AbstractMetric {
         return getRelatedEntities(classNode).size();
     }
 
+    /**
+     *
+     * @param classNodeA
+     * @param classNodeB
+     * @return
+     */
     public Integer calculate(ClassNode classNodeA, ClassNode classNodeB) {
         if (classNodeA == null || classNodeB == null || classNodeA.equals(classNodeB)) {
             return 0;
@@ -53,10 +64,53 @@ public class EfferentCouplingMetric extends AbstractMetric {
         return total;
     }
 
+    /**
+     * Calculate the Efferent Coupling (Ce) between two classes with method level.
+     * @param classNodeA A ClassNode to the class in design.
+     * @param classNodeB A ClassNode to the class in design.
+     * @return The value of the efferent coupling between two classes.
+     */
     public Integer calculateMethodLevel(ClassNode classNodeA, ClassNode classNodeB) {
         if (classNodeA == null || classNodeB == null || classNodeA.equals(classNodeB)) {
             return 0;
         }
         return methodDependenciesBetweenEntities(classNodeA, classNodeB).size();
+    }
+
+    /**
+     * Calculate the Efferent Coupling (Ce) between two packages.
+     * @param packageA A PackageNode to the class in design.
+     * @param packageB A PackageNode to the class in design.
+     * @return The value of the efferent coupling between two packages.
+     */
+    public Integer calculate(PackageNode packageA, PackageNode packageB) {
+        if (packageA == null || packageB == null || packageA.equals(packageB)) {
+            return 0;
+        }
+        Set<ClassNode> classesA = packageA.getAllClasses();
+        Set<ClassNode> classesB = packageB.getAllClasses();
+
+        int total = 0;
+
+        for (ClassNode classA : classesA) {
+            for (ClassNode classB : classesB) {
+                total += calculate(classA, classB);
+            }
+        }
+
+        return total;
+    }
+
+    /**
+     * Calculate the Efferent Coupling (Ce) between two packages with method level.
+     * @param packageA A PackageNode to the class in design.
+     * @param packageB A PackageNode to the class in design.
+     * @return The value of the efferent coupling between two packages.
+     */
+    public Integer calculateMethodLevel(PackageNode packageA, PackageNode packageB) {
+        if (packageA == null || packageB == null || packageA.equals(packageB)) {
+            return 0;
+        }
+        return 0;
     }
 }

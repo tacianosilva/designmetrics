@@ -1,1 +1,1 @@
-Add resources to test.
+Add resources for test.

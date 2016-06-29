@@ -2,6 +2,7 @@ package br.edu.ufcg.splab.designmetrics.metrics;
 
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
+import org.designwizard.design.PackageNode;
 
 public class Coupling {
 
@@ -36,11 +37,50 @@ public class Coupling {
         return instabilityMetric;
     }
 
+    /**
+     * Calculate the Efferent Coupling (Ce) between two classes.
+     * Check if the classes are mutual references: Unidirectional sum 1 and bidirectional sum 2.
+     * @param nodeA A ClassNode to the class in design.
+     * @param nodeB A ClassNode to the class in design.
+     * @return The value of the efferent coupling.
+     */
     public Integer efferentCoupling(ClassNode nodeA, ClassNode nodeB) {
         return ceMetric.calculate(nodeA, nodeB);
     }
 
+    /**
+     * Calculate the Efferent Coupling (Ce) between two classes with method level.
+     * Check if the classes do mutual references:
+     * For each method call add 1;
+     * For each attribute declaration add 1 (called to the constructor).
+     * @param nodeA A ClassNode to the class in design.
+     * @param nodeB A ClassNode to the class in design.
+     * @return The value of the efferent coupling.
+     */
     public Integer efferentCouplingMethodLevel(ClassNode nodeA, ClassNode nodeB) {
+        return ceMetric.calculateMethodLevel(nodeA, nodeB);
+    }
+
+    /**
+     * Calculate the Efferent Coupling (Ce) between two packages.
+     * @param nodeA A ClassNode to the class in design.
+     * @param nodeB A ClassNode to the class in design.
+     * @return The value of the efferent coupling between two packages.
+     */
+    public Integer efferentCoupling(PackageNode nodeA, PackageNode nodeB) {
+        return ceMetric.calculate(nodeA, nodeB);
+    }
+
+    /**
+     * Calculate the Efferent Coupling (Ce) between two packages with method level.
+     * Check if the classes do mutual references:
+     * For each method call add 1;
+     * For each attribute declaration add 1 (called to the constructor).
+     * @param nodeA A PackageNode to the class in design.
+     * @param nodeB A PackageNode to the class in design.
+     * @return The value of the efferent coupling between two packages.
+     */
+    public Integer efferentCouplingMethodLevel(PackageNode nodeA, PackageNode nodeB) {
         return ceMetric.calculateMethodLevel(nodeA, nodeB);
     }
 }

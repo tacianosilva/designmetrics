@@ -137,7 +137,7 @@ public class EfferentCouplingMethodTest {
     }
 
     public void testCeNull() {
-        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(null, null), new Integer(0), "\nCe: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel((ClassNode)null, (ClassNode)null), new Integer(0), "\nCe: ");
         softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classA, null), new Integer(0), "\nCe: ");
         softAssert.assertEquals(coupling.efferentCouplingMethodLevel(null, classA), new Integer(0), "\nCe: ");
         softAssert.assertAll();
