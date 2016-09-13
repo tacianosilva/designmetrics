@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
-import br.edu.ufcg.splab.designmetrics.metrics.EfferentCouplingMetric;
 
 /**
  * Test class with checking the coupling calculation between classes.
@@ -28,6 +27,7 @@ public class EfferentCouplingBetweenPackagesTest {
     private PackageNode cbo1;
     private PackageNode cbo2;
     private PackageNode cbo3;
+    private PackageNode cbo4;
 
     @BeforeClass
     public void setUp() throws Exception {
@@ -39,6 +39,7 @@ public class EfferentCouplingBetweenPackagesTest {
         cbo1 = designWizard.getPackage("br.edu.ufcg.splab.designmetrics.mocks.cbo1");
         cbo2 = designWizard.getPackage("br.edu.ufcg.splab.designmetrics.mocks.cbo2");
         cbo3 = designWizard.getPackage("br.edu.ufcg.splab.designmetrics.mocks.cbo3");
+        cbo4 = designWizard.getPackage("br.edu.ufcg.splab.designmetrics.mocks.cbo4");
     }
 
     @BeforeMethod
@@ -78,19 +79,28 @@ public class EfferentCouplingBetweenPackagesTest {
         Set<ClassNode> classes1 = cbo1.getAllClasses();
         Set<ClassNode> classes2 = cbo2.getAllClasses();
         Set<ClassNode> classes3 = cbo3.getAllClasses();
+        Set<ClassNode> classes4 = cbo4.getAllClasses();
 
         softAssert.assertEquals(classes1.size(), new Integer(16), "\n CBO1 Qtd: ");
         softAssert.assertEquals(classes2.size(), new Integer(9), "\n CBO2 Qtd: ");
-        softAssert.assertEquals(classes3.size(), new Integer(1), "\n CBO3 Qtd: ");
+        softAssert.assertEquals(classes3.size(), new Integer(2), "\n CBO3 Qtd: ");
+        softAssert.assertEquals(classes4.size(), new Integer(1), "\n CBO4 Qtd: ");
 
         softAssert.assertEquals(coupling.efferentCoupling(cbo1, cbo2), new Integer(0), "\n <cbo1, cbo2>: ");
         softAssert.assertEquals(coupling.efferentCoupling(cbo1, cbo3), new Integer(0), "\n <cbo1, cbo3>: ");
+        softAssert.assertEquals(coupling.efferentCoupling(cbo1, cbo4), new Integer(0), "\n <cbo1, cbo4>: ");
 
         softAssert.assertEquals(coupling.efferentCoupling(cbo2, cbo1), new Integer(0), "\n <cbo2, cbo1>: ");
         softAssert.assertEquals(coupling.efferentCoupling(cbo2, cbo3), new Integer(2), "\n <cbo2, cbo3>: ");
+        softAssert.assertEquals(coupling.efferentCoupling(cbo2, cbo4), new Integer(1), "\n <cbo2, cbo4>: ");
 
         softAssert.assertEquals(coupling.efferentCoupling(cbo3, cbo1), new Integer(0), "\n <cbo3, cbo1>: ");
         softAssert.assertEquals(coupling.efferentCoupling(cbo3, cbo2), new Integer(2), "\n <cbo3, cbo2>: ");
+        softAssert.assertEquals(coupling.efferentCoupling(cbo3, cbo4), new Integer(2), "\n <cbo3, cbo4>: ");
+
+        softAssert.assertEquals(coupling.efferentCoupling(cbo4, cbo1), new Integer(0), "\n <cbo4, cbo1>: ");
+        softAssert.assertEquals(coupling.efferentCoupling(cbo4, cbo2), new Integer(2), "\n <cbo4, cbo2>: ");
+        softAssert.assertEquals(coupling.efferentCoupling(cbo4, cbo3), new Integer(2), "\n <cbo4, cbo3>: ");
 
         softAssert.assertAll();
     }

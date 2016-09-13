@@ -95,6 +95,10 @@ public class EfferentCouplingMetric extends AbstractMetric {
         for (ClassNode classA : classesA) {
             for (ClassNode classB : classesB) {
                 total += calculate(classA, classB);
+                Set<ClassNode> dependencies = dependenciesBetweenEntities(classA, classB);
+                for (ClassNode classNode : dependencies) {
+                    System.out.println("Dep("+classA.getName()+ ", "+classB.getName()+") = " + classNode.getName());
+                }
             }
         }
 
