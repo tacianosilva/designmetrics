@@ -2,7 +2,9 @@ package br.edu.ufcg.splab.designmetrics.mocks.cbo1;
 
 public class ClassC {
 
-    private ClassA a;
+    @SuppressWarnings("unused")
+	private ClassA a;
 
-    private ClassB b;
+    @SuppressWarnings("unused")
+	private ClassB b;
 }
