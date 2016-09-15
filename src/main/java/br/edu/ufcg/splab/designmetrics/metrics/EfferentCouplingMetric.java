@@ -1,5 +1,6 @@
 package br.edu.ufcg.splab.designmetrics.metrics;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.designwizard.api.DesignWizard;
@@ -89,20 +90,20 @@ public class EfferentCouplingMetric extends AbstractMetric {
         }
         Set<ClassNode> classesA = packageA.getAllClasses();
         Set<ClassNode> classesB = packageB.getAllClasses();
-
-        int total = 0;
+        
+        Set<ClassNode> dependencies = new HashSet<>();
 
         for (ClassNode classA : classesA) {
             for (ClassNode classB : classesB) {
-                total += calculate(classA, classB);
-                Set<ClassNode> dependencies = dependenciesBetweenEntities(classA, classB);
-                for (ClassNode classNode : dependencies) {
+            	Set<ClassNode> depAB = dependenciesBetweenEntities(classA, classB);
+                dependencies.addAll(depAB);
+                for (ClassNode classNode : depAB) {
                     System.out.println("Dep("+classA.getName()+ ", "+classB.getName()+") = " + classNode.getName());
                 }
             }
         }
 
-        return total;
+        return dependencies.size();
     }
 
     /**
