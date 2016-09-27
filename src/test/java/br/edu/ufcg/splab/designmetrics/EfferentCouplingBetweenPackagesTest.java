@@ -81,10 +81,11 @@ public class EfferentCouplingBetweenPackagesTest {
         Set<ClassNode> classes3 = cbo3.getAllClasses();
         Set<ClassNode> classes4 = cbo4.getAllClasses();
 
-        softAssert.assertEquals(classes1.size(), new Integer(16), "\n CBO1 Qtd: ");
-        softAssert.assertEquals(classes2.size(), new Integer(9), "\n CBO2 Qtd: ");
-        softAssert.assertEquals(classes3.size(), new Integer(3), "\n CBO3 Qtd: ");
-        softAssert.assertEquals(classes4.size(), new Integer(2), "\n CBO4 Qtd: ");
+        // os tipos no assertEquals tem que ser iguais (Error: reference to assertEquals is ambiguous)
+        softAssert.assertEquals(classes1.size(), 16, "\n CBO1 Qtd: ");
+        softAssert.assertEquals(classes2.size(), 9, "\n CBO2 Qtd: ");
+        softAssert.assertEquals(classes3.size(), 3, "\n CBO3 Qtd: ");
+        softAssert.assertEquals(classes4.size(), 2, "\n CBO4 Qtd: ");
 
         softAssert.assertEquals(coupling.efferentCoupling(cbo1, cbo2), new Integer(0), "\n <cbo1, cbo2>: ");
         softAssert.assertEquals(coupling.efferentCoupling(cbo1, cbo3), new Integer(0), "\n <cbo1, cbo3>: ");
