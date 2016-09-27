@@ -67,7 +67,7 @@ public class EfferentCouplingBetweenClassTest {
     }
 
     public void testNull() {
-        softAssert.assertEquals(ceMetric.calculate(null, null), new Integer(0), "\n <null, null>: ");
+        softAssert.assertEquals(ceMetric.calculate((ClassNode) null, (ClassNode) null), new Integer(0), "\n <null, null>: ");
         softAssert.assertEquals(ceMetric.calculate(classEmpty, null), new Integer(0), "\n <object, null>: ");
         softAssert.assertEquals(ceMetric.calculate(null, classEmpty), new Integer(0), "\n <null, object>: ");
         softAssert.assertAll();

@@ -1,5 +1,13 @@
 package br.edu.ufcg.splab.designmetrics;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Set;
 
 import org.designwizard.api.DesignWizard;
@@ -33,11 +41,14 @@ public class EfferentCouplingDesignWizardTest {
     @BeforeClass
     public void setUp() throws Exception {
 
-        String home = System.getProperty("user.home");
+        downloadProject();
+        
+        // Project to analyze
+    	String project = "src/test/resources/designwizard-1.5-SNAPSHOT.jar";
+        
         // Design for all classes in the project.
         // Add here binary code or jar file of the project.
-        designWizard = new DesignWizard(home + "/.m2/repository/org/designwizard/designwizard/1.5-SNAPSHOT/"
-                + "designwizard-1.5-SNAPSHOT.jar");
+        designWizard = new DesignWizard(project);
         ceMetric = new EfferentCouplingMetric(designWizard);
         coupling = new Coupling(designWizard);
 
@@ -50,6 +61,24 @@ public class EfferentCouplingDesignWizardTest {
         fieldNode = designWizard.getClass("org.designwizard.design.FieldNode");
         relation = designWizard.getClass("org.designwizard.design.relation.Relation");
     }
+
+	private void downloadProject() throws MalformedURLException, IOException {
+		String fileName = "designwizard-1.5-SNAPSHOT.jar";
+		String targetDirectory = "src/test/resources/";
+		
+		Path path = Paths.get(targetDirectory + fileName);
+		
+		if (Files.notExists(path)) {
+			String sourceUrl = "https://oss.sonatype.org/content/repositories/snapshots/org/designwizard/designwizard/1.5-SNAPSHOT/designwizard-1.5-20160601.200935-2.jar";
+        
+			URL url = new URL(sourceUrl);
+
+        	Path targetPath = new File(targetDirectory + fileName).toPath();
+
+        	Files.copy(url.openStream(), targetPath,
+                    StandardCopyOption.REPLACE_EXISTING);
+		}
+	}
 
     @BeforeMethod
     public void startTest() {

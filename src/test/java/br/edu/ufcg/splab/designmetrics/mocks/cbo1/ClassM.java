@@ -11,7 +11,8 @@ public class ClassM {
     }
 
     public String getStrE() {
-        ClassE e;
+        @SuppressWarnings("unused")
+		ClassE e;
         return "e";
     }
 }
