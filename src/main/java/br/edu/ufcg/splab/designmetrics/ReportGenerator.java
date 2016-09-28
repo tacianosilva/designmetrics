@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 
@@ -15,7 +16,7 @@ import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
 
 public class ReportGenerator {
 	
-	private static Logger logger = Logger.getLogger(ReportGenerator.class);
+	private static Logger logger = LogManager.getLogger(ReportGenerator.class);
 
 	public static void main(String[] args) {
 		logger.info("Start Main - Gerando Relatórios de Acoplamento");
@@ -59,19 +60,17 @@ public class ReportGenerator {
 	
     public static void processarProjeto(String projeto, PrintWriter resultsWriter) {
         
-        //String reposDir = "/local_home/tacianosilva/workspace/epol-server";
         String reposDir = "/local_home/tacianosilva/workspace/";
         String classDir = getClassesDirectory(projeto);
 
         String projectDir = reposDir + projeto + classDir;
 
         try {
-            logger.info("Diretório do Projeto: " + projectDir);
-            System.out.println("Diretório do Projeto: " + projectDir);
+            logger.info("Project Directory: " + projectDir);
             
             DesignWizard designWizard = new DesignWizard(projectDir);
 
-            // Model Classes from Project
+            // All Classes from Project
             Set<ClassNode> classes = designWizard.getAllClasses();
 
             for (ClassNode classNode : classes) {
@@ -82,14 +81,12 @@ public class ReportGenerator {
                 Integer afferent = coupling.afferentCoupling(classNode);
 
                 logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + afferent);
-                System.out.println(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + afferent);
 
                 gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, afferent);
             }
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            System.out.println(e.getMessage());
         }
     }
     
