@@ -29,4 +29,11 @@ public class AfferentCouplingMetric extends AbstractMetric {
         }
         return getDependentsEntities(classNode).size();
     }
+    
+    public Integer calculateMethodLevel(ClassNode classNode) {
+        if (classNode == null) {
+            return 0;
+        }
+        return getDependentsMethods(classNode).size();
+    }
 }

@@ -18,9 +18,17 @@ public class Coupling {
     public Integer efferentCoupling(ClassNode node) {
         return ceMetric.calculate(node);
     }
+    
+    public Integer efferentCouplingMethodLevel(ClassNode node) {
+        return ceMetric.calculateMethodLevel(node);
+    }
 
     public Integer afferentCoupling(ClassNode node) {
         return caMetric.calculate(node);
+    }
+    
+    public Integer afferentCouplingMethodLevel(ClassNode node) {
+        return caMetric.calculateMethodLevel(node);
     }
 
     public Integer efferentCoupling() {

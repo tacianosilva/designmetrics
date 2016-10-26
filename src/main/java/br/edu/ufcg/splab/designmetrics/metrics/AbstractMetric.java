@@ -26,7 +26,7 @@ public abstract class AbstractMetric implements Metric {
      * Return the direct related entities to the class.
      *
      * @param classNode The class that you want the directly related entities.
-     * @return Returns a set with the entities classeNodes direct related.
+     * @return Returns a set with the entities classeNodes directly related.
      */
     public Set<ClassNode> getRelatedEntities(ClassNode classNode) {
         Set<ClassNode> directRelatedEntities = new HashSet<>();
@@ -39,6 +39,25 @@ public abstract class AbstractMetric implements Metric {
         directRelatedEntities.addAll(getFieldDeclaredEntities(classNode));
 
         return directRelatedEntities;
+    }
+    
+    /**
+     * Return the direct related methods to the class.
+     *
+     * @param classNode The class that you want the directly related methods.
+     * @return Returns a set with the entities methodNodes directly related.
+     */
+    public Set<MethodNode> getRelatedMethods(ClassNode classNode) {
+        Set<MethodNode> directRelatedMethods = new HashSet<>();
+
+        // Classes directly calls
+        directRelatedMethods.addAll(getDirectRelatedMethods(classNode));
+        // Classes in the methods type return or method parameters
+        //directRelatedMethods.addAll(getMethodRelatedEntities(classNode));
+        // Fields Declared
+        //directRelatedMethods.addAll(getFieldDeclaredEntities(classNode));
+
+        return directRelatedMethods;
     }
 
     /**
@@ -57,6 +76,17 @@ public abstract class AbstractMetric implements Metric {
 
         return directDependentsEntities;
     }
+    
+    public Set<MethodNode> getDependentsMethods(ClassNode classNode) {
+        Set<MethodNode> directDependentsMethods = new HashSet<>();
+
+        // Classes directly callers
+        directDependentsMethods.addAll(getDirectDependentsMethods(classNode));
+        // Classes in the methods type return or method parameters
+        //directDependentsMethods.addAll(getMethodDependentsEntities(classNode));
+
+        return directDependentsMethods;
+    }
 
     /**
      * @param classNode
@@ -73,6 +103,22 @@ public abstract class AbstractMetric implements Metric {
         }
         return feedback;
     }
+    
+    /**
+     * @param classNode
+     * @return
+     */
+    private Set<MethodNode> getDirectRelatedMethods(ClassNode classNode) {
+        Set<MethodNode> feedback = new HashSet<>();
+        Set<MethodNode> callees = classNode.getCalleeMethods();
+
+        for (MethodNode callee : callees) {
+            if (isNewRelatedMethod(classNode, callee)) {
+                feedback.add(callee);
+            }
+        }
+        return feedback;
+    }
 
     /**
      * @param classNode
@@ -84,6 +130,18 @@ public abstract class AbstractMetric implements Metric {
 
         for (ClassNode caller : callers) {
             if (isNewRelatedClass(classNode, caller)) {
+                feedback.add(caller);
+            }
+        }
+        return feedback;
+    }
+    
+    private Set<MethodNode> getDirectDependentsMethods(ClassNode classNode) {
+        Set<MethodNode> feedback = new HashSet<>();
+        Set<MethodNode> callers = classNode.getCallerMethods();
+
+        for (MethodNode caller : callers) {
+            if (isNewRelatedMethod(classNode, caller)) {
                 feedback.add(caller);
             }
         }
@@ -186,6 +244,10 @@ public abstract class AbstractMetric implements Metric {
     private boolean isInTheDesign(ClassNode classNode) {
         return getAllClasses().contains(classNode);
     }
+    
+    private boolean isInTheDesign(MethodNode methodNode) {
+        return getAllMethods().contains(methodNode);
+    }
 
     protected Set<ClassNode> getAllClasses() {
         if (this.designwizard == null) {
@@ -193,10 +255,24 @@ public abstract class AbstractMetric implements Metric {
         }
         return designwizard.getAllClasses();
     }
+    
+    protected Set<MethodNode> getAllMethods() {
+        if (this.designwizard == null) {
+            return new HashSet<>();
+        }
+        return designwizard.getAllMethods();
+    }
 
     private boolean isNewRelatedClass(ClassNode classNode, ClassNode newClass) {
         if (newClass != null && !newClass.equals(classNode) && !OBJECT_CLASS_NAME.equals(newClass.getClassName())
                 && isInTheDesign(newClass)) {
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean isNewRelatedMethod(ClassNode classNode, MethodNode newMethod) {
+        if (newMethod != null && isInTheDesign(newMethod)) {
             return true;
         }
         return false;

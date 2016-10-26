@@ -79,8 +79,11 @@ public class ReportGenerator {
                 
                 Integer efferent = coupling.efferentCoupling(classNode);
                 Integer afferent = coupling.afferentCoupling(classNode);
+                
+                Integer effMl = coupling.efferentCouplingMethodLevel(classNode);
+                Integer affMl = coupling.afferentCouplingMethodLevel(classNode);
 
-                logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + afferent);
+                logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
 
                 gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, afferent);
             }
