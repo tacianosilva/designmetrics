@@ -3,6 +3,8 @@ package br.edu.ufcg.splab.designmetrics.metrics;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.PackageNode;
@@ -14,6 +16,8 @@ import org.designwizard.design.PackageNode;
  * @author Taciano Morais Silva - tacianosilva@gmail.com
  */
 public class EfferentCouplingMetric extends AbstractMetric {
+    
+    private static Logger logger = LogManager.getLogger(EfferentCouplingMetric.class);
 
     /**
      * Construct the metric for the design parameter.
@@ -115,7 +119,7 @@ public class EfferentCouplingMetric extends AbstractMetric {
             	Set<ClassNode> depAB = dependenciesBetweenEntities(classA, classB);
                 dependencies.addAll(depAB);
                 for (ClassNode classNode : depAB) {
-                    System.out.println("Dep("+classA.getName()+ ", "+classB.getName()+") = " + classNode.getName());
+                    logger.debug("Dep("+classA.getName()+ ", "+classB.getName()+") = " + classNode.getName());
                 }
             }
         }
