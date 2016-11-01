@@ -55,7 +55,7 @@ public class EfferentCouplingMetric extends AbstractMetric {
      * @param classNode
      *            The classNode that is desired efferent coupling.
      * @return The value of efferent coupling. If
-     *         {@code Entity} is <code>null</code> returns <code>0</code>.
+     *         {@code ClassNode} is <code>null</code> returns <code>0</code>.
      */
     public Integer calculateMethodLevel(ClassNode classNode) {
         if (classNode == null) {
@@ -65,10 +65,12 @@ public class EfferentCouplingMetric extends AbstractMetric {
     }
 
     /**
-     *
-     * @param classNodeA
-     * @param classNodeB
-     * @return
+     * Efferent Coupling (Ce) between two classes is the sum of the directly related classes of each class
+     * included references between them.
+     * @param classNodeA The classNode that is desired efferent coupling.
+     * @param classNodeB The classNode that is desired efferent coupling.
+     * @return The value of efferent coupling. If
+     *         {@code ClassNode} is <code>null</code> returns <code>0</code>.
      */
     public Integer calculate(ClassNode classNodeA, ClassNode classNodeB) {
         if (classNodeA == null || classNodeB == null || classNodeA.equals(classNodeB)) {
