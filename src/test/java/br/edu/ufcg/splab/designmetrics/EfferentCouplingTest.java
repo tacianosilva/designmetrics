@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
+import org.designwizard.design.MethodNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -148,6 +149,7 @@ public class EfferentCouplingTest {
 
     public void testCeNull() {
         softAssert.assertEquals(coupling.efferentCoupling(null), new Integer(0), "\nCe: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(null), new Integer(0), "\nCe ml: ");
         softAssert.assertAll();
     }
 
@@ -165,6 +167,7 @@ public class EfferentCouplingTest {
         ceMetric = new EfferentCouplingMetric(null);
 
         softAssert.assertEquals(ceMetric.calculate(classA), new Integer(0), "\nCe: ");
+        softAssert.assertEquals(ceMetric.calculateMethodLevel(classA), new Integer(0), "\nCe ml: ");
 
         softAssert.assertAll();
     }
@@ -176,6 +179,9 @@ public class EfferentCouplingTest {
 
         softAssert.assertEquals(coupling.efferentCoupling(classA), new Integer(0), "\nCe: ");
         softAssert.assertEquals(directRelatedEntities.size(), 0);
+        
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classA), new Integer(0), "\nCe ml: ");
+        
         softAssert.assertAll();
     }
 
@@ -183,6 +189,12 @@ public class EfferentCouplingTest {
         Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classB);
         softAssert.assertTrue(directRelatedEntities.contains(classA));
         softAssert.assertEquals(coupling.efferentCoupling(classB), new Integer(1), "\nCe: ");
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classB);
+        MethodNode constructorA = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassA.<init>()", true);
+        softAssert.assertTrue(directRelatedMethods.contains(constructorA), "Constructor A: ");        
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classB), new Integer(1), "Ce ml: ");
+        
         softAssert.assertAll();
     }
 
@@ -191,6 +203,14 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classA));
         softAssert.assertTrue(directRelatedEntities.contains(classB));
         softAssert.assertEquals(coupling.efferentCoupling(classC), new Integer(2), "\nCe: ");
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classC);
+        MethodNode constructorA = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassA.<init>()", true);
+        MethodNode constructorB = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassB.<init>()", true);
+        softAssert.assertTrue(directRelatedMethods.contains(constructorA), "Constructor A: ");
+        softAssert.assertTrue(directRelatedMethods.contains(constructorB), "Constructor B: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classC), new Integer(2), "Ce ml: ");
+        
         softAssert.assertAll();
     }
 
@@ -199,12 +219,24 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classC));
         softAssert.assertEquals(coupling.efferentCoupling(classD), new Integer(1), "\nCe: ");
         softAssert.assertAll();
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classD);
+        MethodNode constructorC = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassC.<init>()", true);
+        softAssert.assertTrue(directRelatedMethods.contains(constructorC), "Constructor C: ");
+
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classD), new Integer(1), "Ce ml: ");
     }
 
     public void testCeClassE() {
         Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classE);
         softAssert.assertTrue(directRelatedEntities.contains(classC));
         softAssert.assertEquals(coupling.efferentCoupling(classE), new Integer(1), "\nCe: ");
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classE);
+        MethodNode constructorC = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassC.<init>()", true);
+        softAssert.assertTrue(directRelatedMethods.contains(constructorC), "Constructor C: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classE), new Integer(1), "Ce ml: ");
+        
         softAssert.assertAll();
     }
 
@@ -213,6 +245,14 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classD));
         softAssert.assertTrue(directRelatedEntities.contains(classE));
         softAssert.assertEquals(coupling.efferentCoupling(classF), new Integer(2), "\nCe: ");
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classF);
+        MethodNode constructorD = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassD.<init>()", true);
+        MethodNode constructorE = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassE.<init>()", true);
+        softAssert.assertTrue(directRelatedMethods.contains(constructorD), "Constructor D: ");
+        softAssert.assertTrue(directRelatedMethods.contains(constructorE), "Constructor E: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classF), new Integer(2), "Ce ml: ");
+        
         softAssert.assertAll();
     }
 
@@ -220,6 +260,15 @@ public class EfferentCouplingTest {
         Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(classG);
         softAssert.assertTrue(directRelatedEntities.contains(classF));
         softAssert.assertEquals(coupling.efferentCoupling(classG), new Integer(1), "\nCe: ");
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classG);
+        MethodNode constructorF = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassF.<init>()", true);
+        MethodNode getValF = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassF.getVal()", false);
+        
+        softAssert.assertTrue(directRelatedMethods.contains(constructorF), "Constructor F: ");
+        softAssert.assertTrue(directRelatedMethods.contains(getValF), "getVal F: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classG), new Integer(2), "Ce ml: ");
+        
         softAssert.assertAll();
     }
 
@@ -228,6 +277,19 @@ public class EfferentCouplingTest {
         softAssert.assertTrue(directRelatedEntities.contains(classF), "\nClassF");
         softAssert.assertTrue(directRelatedEntities.contains(classD), "\nClassD");
         softAssert.assertEquals(coupling.efferentCoupling(classH), new Integer(2), "\nCe: ");
+        
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(classH);
+        MethodNode constructorD = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassD.<init>()", true);
+        MethodNode constructorF = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassF.<init>()", true);
+        MethodNode getD = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassF.getD()", false);
+        MethodNode getConjunto = new MethodNode("br.edu.ufcg.splab.designmetrics.mocks.cbo1.ClassF.getConjunto()", false);
+        
+        softAssert.assertTrue(directRelatedMethods.contains(constructorF), "Constructor F: ");
+        softAssert.assertTrue(directRelatedMethods.contains(constructorD), "Constructor D: ");
+        softAssert.assertTrue(directRelatedMethods.contains(getD), "getD F: ");
+        softAssert.assertTrue(directRelatedMethods.contains(getConjunto), "getConjunto F: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(classH), new Integer(4), "Ce ml: ");
+        
         softAssert.assertAll();
     }
 
