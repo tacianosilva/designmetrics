@@ -53,9 +53,9 @@ public abstract class AbstractMetric implements Metric {
         // Classes directly calls
         directRelatedMethods.addAll(getDirectRelatedMethods(classNode));
         // Classes in the methods type return or method parameters
-        //directRelatedMethods.addAll(getMethodRelatedEntities(classNode));
+        directRelatedMethods.addAll(getMethodRelatedMethods(classNode));
         // Fields Declared
-        //directRelatedMethods.addAll(getFieldDeclaredEntities(classNode));
+        directRelatedMethods.addAll(getFieldDeclaredMethods(classNode));
 
         return directRelatedMethods;
     }
@@ -165,6 +165,42 @@ public abstract class AbstractMetric implements Metric {
 
         return feedback;
     }
+    
+    /**
+     * Returns the Constructors Methods.
+     * @param classNode
+     * @return
+     */
+    private Set<MethodNode> getFieldDeclaredMethods(ClassNode classNode) {
+        Set<MethodNode> feedback = new HashSet<>();
+        Set<FieldNode> fieldsDeclared = classNode.getAllFields();
+
+        for (FieldNode field : fieldsDeclared) {
+            ClassNode type = field.getType();
+            MethodNode constructor = getDefaultConstructor(type);
+            if (isNewRelatedMethod(classNode, constructor)) {
+                feedback.add(constructor);
+            }
+        }
+
+        return feedback;
+    }
+    
+    private MethodNode getDefaultConstructor(ClassNode classNode) {
+        Set<MethodNode> constructores = classNode.getConstructors();
+        MethodNode constructor;
+        
+        if (classNode == null || classNode.getClassName().equals("void")) {
+            return null;
+        }
+        
+        if (constructores.isEmpty()) {
+            constructor = new MethodNode(classNode.getClassName() + ".<init>()", true);
+        } else {
+            constructor = (MethodNode)(constructores.toArray())[0];
+        }
+        return constructor;
+    }
 
     /**
      * @param classNode
@@ -188,6 +224,37 @@ public abstract class AbstractMetric implements Metric {
             for (ClassNode parameter : parameters) {
                 if (isNewRelatedClass(classNode, parameter)) {
                     feedback.add(parameter);
+                }
+            }
+        }
+        return feedback;
+    }
+    
+    private Set<MethodNode> getMethodRelatedMethods(ClassNode classNode) {
+        Set<MethodNode> feedback = new HashSet<>();
+
+        Set<MethodNode> methods = new HashSet<>();
+        methods.addAll(classNode.getAllMethods());
+        methods.addAll(classNode.getCalleeMethods());
+
+        for (MethodNode method : methods) {
+            MethodNode constructor;
+            if (method.isConstructor()) {
+                constructor = method;
+            } else {
+                ClassNode type = method.getReturnType();
+                constructor = getDefaultConstructor(type);
+            }
+            if (isNewRelatedMethod(classNode, constructor)) {
+                feedback.add(constructor);
+            }
+
+            Set<ClassNode> parameters = getParameters(method);
+
+            for (ClassNode parameter : parameters) {
+                constructor = getDefaultConstructor(parameter);
+                if (isNewRelatedMethod(classNode, constructor)) {
+                    feedback.add(constructor);
                 }
             }
         }
@@ -272,7 +339,7 @@ public abstract class AbstractMetric implements Metric {
     }
     
     private boolean isNewRelatedMethod(ClassNode classNode, MethodNode newMethod) {
-        if (newMethod != null && isInTheDesign(newMethod)) {
+        if (newMethod != null && !classNode.getAllMethods().contains(newMethod) && isInTheDesign(newMethod)) {
             return true;
         }
         return false;

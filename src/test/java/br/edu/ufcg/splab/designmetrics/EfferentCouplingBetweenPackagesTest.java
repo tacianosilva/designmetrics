@@ -58,6 +58,7 @@ public class EfferentCouplingBetweenPackagesTest {
         softAssert.assertEquals(coupling.efferentCoupling(packageA, packageB), new Integer(0), "\n <null, null>: ");
         softAssert.assertEquals(coupling.efferentCoupling(cbo1, packageA), new Integer(0), "\n <object, null>: ");
         softAssert.assertEquals(coupling.efferentCoupling(packageA, cbo1), new Integer(0), "\n <null, object>: ");
+        softAssert.assertEquals(coupling.efferentCoupling(cbo1, cbo1), new Integer(0), "\n <object, object>: ");
         softAssert.assertAll();
     }
 

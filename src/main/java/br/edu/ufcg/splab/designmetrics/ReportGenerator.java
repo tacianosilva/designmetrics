@@ -17,6 +17,10 @@ import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
 public class ReportGenerator {
 	
 	private static Logger logger = LogManager.getLogger(ReportGenerator.class);
+	
+	private ReportGenerator() {
+	    super();
+	}
 
 	public static void main(String[] args) {
 		logger.info("Start Main - Gerando Relatórios de Acoplamento");

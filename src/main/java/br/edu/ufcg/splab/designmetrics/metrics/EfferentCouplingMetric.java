@@ -3,6 +3,8 @@ package br.edu.ufcg.splab.designmetrics.metrics;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.PackageNode;
@@ -14,6 +16,8 @@ import org.designwizard.design.PackageNode;
  * @author Taciano Morais Silva - tacianosilva@gmail.com
  */
 public class EfferentCouplingMetric extends AbstractMetric {
+    
+    private static Logger logger = LogManager.getLogger(EfferentCouplingMetric.class);
 
     /**
      * Construct the metric for the design parameter.
@@ -51,7 +55,7 @@ public class EfferentCouplingMetric extends AbstractMetric {
      * @param classNode
      *            The classNode that is desired efferent coupling.
      * @return The value of efferent coupling. If
-     *         {@code Entity} is <code>null</code> returns <code>0</code>.
+     *         {@code ClassNode} is <code>null</code> returns <code>0</code>.
      */
     public Integer calculateMethodLevel(ClassNode classNode) {
         if (classNode == null) {
@@ -61,10 +65,12 @@ public class EfferentCouplingMetric extends AbstractMetric {
     }
 
     /**
-     *
-     * @param classNodeA
-     * @param classNodeB
-     * @return
+     * Efferent Coupling (Ce) between two classes is the sum of the directly related classes of each class
+     * included references between them.
+     * @param classNodeA The classNode that is desired efferent coupling.
+     * @param classNodeB The classNode that is desired efferent coupling.
+     * @return The value of efferent coupling. If
+     *         {@code ClassNode} is <code>null</code> returns <code>0</code>.
      */
     public Integer calculate(ClassNode classNodeA, ClassNode classNodeB) {
         if (classNodeA == null || classNodeB == null || classNodeA.equals(classNodeB)) {
@@ -115,7 +121,7 @@ public class EfferentCouplingMetric extends AbstractMetric {
             	Set<ClassNode> depAB = dependenciesBetweenEntities(classA, classB);
                 dependencies.addAll(depAB);
                 for (ClassNode classNode : depAB) {
-                    System.out.println("Dep("+classA.getName()+ ", "+classB.getName()+") = " + classNode.getName());
+                    logger.debug("Dep("+classA.getName()+ ", "+classB.getName()+") = " + classNode.getName());
                 }
             }
         }
