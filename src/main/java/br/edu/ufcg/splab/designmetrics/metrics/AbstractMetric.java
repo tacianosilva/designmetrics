@@ -187,12 +187,12 @@ public abstract class AbstractMetric implements Metric {
     }
     
     private MethodNode getDefaultConstructor(ClassNode classNode) {
-        Set<MethodNode> constructores = classNode.getConstructors();
-        MethodNode constructor;
-        
         if (classNode == null || classNode.getClassName().equals("void")) {
             return null;
         }
+        
+        Set<MethodNode> constructores = classNode.getConstructors();
+        MethodNode constructor;
         
         if (constructores.isEmpty()) {
             constructor = new MethodNode(classNode.getClassName() + ".<init>()", true);
