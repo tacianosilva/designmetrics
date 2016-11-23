@@ -42,7 +42,7 @@ public class ReportGenerator {
 
             FileWriter fw = criarArquivo(fileResults);
             PrintWriter resultsWriter = new PrintWriter(fw);
-            resultsWriter.printf("%s,%s,%s,%s%n", "project", "class", "ce", "ca");
+            resultsWriter.printf("%s,%s,%s,%s,%s,%s%n", "project", "class", "ce", "ce ml", "ca", "ca ml");
 
             String linha = lerArq.readLine(); // lê a primeira linha
             // a variável "linha" recebe o valor "null" quando o processo
@@ -89,7 +89,7 @@ public class ReportGenerator {
 
                 logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
 
-                gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, afferent);
+                gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
             }
 
         } catch (Exception e) {
@@ -97,8 +97,8 @@ public class ReportGenerator {
         }
     }
     
-    private static void gravarLinha(PrintWriter gravar, String projeto, String className, int efferent, int afferent) {
-        gravar.printf("%s,%s,%d,%d%n", projeto, className, efferent, afferent);
+    private static void gravarLinha(PrintWriter gravar, String projeto, String className, int efferent, int effMl, int afferent, int affMl) {
+        gravar.printf("%s,%s,%d,%d,%d,%d%n", projeto, className, efferent, effMl, afferent, affMl);
     }
 
     public static FileWriter criarArquivo(String fileResults) throws IOException {
