@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
+import org.designwizard.design.MethodNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -37,6 +38,7 @@ public class EfferentCouplingDesignWizardTest {
     private ClassNode methodNode;
     private ClassNode fieldNode;
     private ClassNode relation;
+    private ClassNode designManager;
 
     @BeforeClass
     public void setUp() throws Exception {
@@ -60,6 +62,8 @@ public class EfferentCouplingDesignWizardTest {
         methodNode = designWizard.getClass("org.designwizard.design.MethodNode");
         fieldNode = designWizard.getClass("org.designwizard.design.FieldNode");
         relation = designWizard.getClass("org.designwizard.design.relation.Relation");
+        
+        designManager = designWizard.getClass("org.designwizard.design.manager.DesignManager");
     }
 
 	private void downloadProject() throws MalformedURLException, IOException {
@@ -147,6 +151,27 @@ public class EfferentCouplingDesignWizardTest {
         softAssert.assertTrue(directRelatedEntities.contains(classNode));
         softAssert.assertTrue(directRelatedEntities.contains(relation));
         softAssert.assertEquals(coupling.efferentCoupling(fieldNode), new Integer(9), "\n fieldNode Ce: ");
+        softAssert.assertAll();
+    }
+    
+    public void testCeDesignManager() {
+        Set<ClassNode> directRelatedEntities = ceMetric.getRelatedEntities(designManager);
+        for (ClassNode classNode : directRelatedEntities) {
+            System.out.println(classNode.getName());
+        }
+        System.out.println();
+        Set<MethodNode> directRelatedMethods = ceMetric.getRelatedMethods(designManager);
+        
+        for (MethodNode methodNode : directRelatedMethods) {
+            System.out.println(methodNode.getName());
+        }
+
+        softAssert.assertTrue(directRelatedEntities.contains(packageNode));
+        softAssert.assertTrue(directRelatedEntities.contains(classNode));
+        softAssert.assertTrue(directRelatedEntities.contains(fieldNode));
+        softAssert.assertTrue(directRelatedEntities.contains(methodNode));
+        softAssert.assertEquals(coupling.efferentCoupling(designManager), new Integer(18), "\n designManager Ce: ");
+        softAssert.assertEquals(coupling.efferentCouplingMethodLevel(designManager), new Integer(46), "\n designManager Ce ml: ");
         softAssert.assertAll();
     }
 }
