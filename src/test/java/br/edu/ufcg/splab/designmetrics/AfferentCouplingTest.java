@@ -144,7 +144,7 @@ public class AfferentCouplingTest {
     }
 
     public void testCaNull() {
-        softAssert.assertEquals(coupling.afferentCoupling(null), new Integer(0), "\nCa: ");
+        softAssert.assertEquals(coupling.afferentCoupling((ClassNode)null), new Integer(0), "\nCa: ");
         softAssert.assertAll();
     }
 

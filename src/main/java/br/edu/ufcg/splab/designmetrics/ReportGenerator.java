@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
+import org.designwizard.design.PackageNode;
 
 import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
 
@@ -77,26 +78,51 @@ public class ReportGenerator {
             
             DesignWizard designWizard = new DesignWizard(projectDir);
 
-            // All Classes from Project
-            Set<ClassNode> classes = designWizard.getAllClasses();
-
-            for (ClassNode classNode : classes) {
-
-                Coupling coupling = new Coupling(designWizard);
-                
-                Integer efferent = coupling.efferentCoupling(classNode);
-                Integer afferent = coupling.afferentCoupling(classNode);
-                
-                Integer effMl = coupling.efferentCouplingMethodLevel(classNode);
-                Integer affMl = coupling.afferentCouplingMethodLevel(classNode);
-
-                logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
-
-                gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
-            }
+            //classReport(projeto, resultsWriter, designWizard);
+            packageReport(projeto, designWizard);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        }
+        
+
+    }
+
+    private static void classReport(String projeto, PrintWriter resultsWriter, DesignWizard designWizard) {
+        // All Classes from Project
+        Set<ClassNode> classes = designWizard.getAllClasses();
+
+        for (ClassNode classNode : classes) {
+
+            Coupling coupling = new Coupling(designWizard);
+            
+            Integer efferent = coupling.efferentCoupling(classNode);
+            Integer afferent = coupling.afferentCoupling(classNode);
+            
+            Integer effMl = coupling.efferentCouplingMethodLevel(classNode);
+            Integer affMl = coupling.afferentCouplingMethodLevel(classNode);
+
+            logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
+
+            gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
+        }
+    }
+
+    private static void packageReport(String project, DesignWizard designWizard) {
+        logger.info("Generating Couple Package Report ..." + project);
+        
+        // All packages from Project
+        Set<PackageNode> packages = designWizard.getAllPackages();
+        PackageReport pr = new PackageReport(designWizard);
+        
+        for (PackageNode packageNode : packages) {
+
+            pr.execute(packageNode);
+            logger.debug(project + ", " + packageNode.getName() 
+                        + ", " + pr.getCe() + ", " + pr.getCeMl() 
+                        + ", " + pr.getCa() + ", " + pr.getCaMl());
+
+            //gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
         }
     }
     

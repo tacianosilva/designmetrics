@@ -47,6 +47,30 @@ public class EfferentCouplingMetric extends AbstractMetric {
         return getRelatedEntities(classNode).size();
     }
     
+    public Integer calculate(PackageNode packageNode) {
+        if (packageNode == null) {
+            return 0;
+        }
+        int total = 0;
+        Set<ClassNode> classes = packageNode.getAllClasses();
+        for (ClassNode classNode : classes) {
+            total += calculate(classNode);
+        }
+        return total;
+    }
+    
+    public Integer calculateMethodLevel(PackageNode packageNode) {
+        if (packageNode == null) {
+            return 0;
+        }
+        int total = 0;
+        Set<ClassNode> classes = packageNode.getAllClasses();
+        for (ClassNode classNode : classes) {
+            total += calculateMethodLevel(classNode);
+        }
+        return total;
+    }
+    
     /**
      * Efferent Coupling (Ce) is the number of methods declared in one class use methods or
      * instance variables defined by the other class. The uses relationship can go either way:

@@ -1,7 +1,10 @@
 package br.edu.ufcg.splab.designmetrics.metrics;
 
+import java.util.Set;
+
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.ClassNode;
+import org.designwizard.design.PackageNode;
 
 /**
  * Class to calculate Afferent Coupling (Ca) is the number of methods declared in one class use methods or
@@ -35,5 +38,29 @@ public class AfferentCouplingMetric extends AbstractMetric {
             return 0;
         }
         return getDependentsMethods(classNode).size();
+    }
+    
+    public Integer calculate(PackageNode packageNode) {
+        if (packageNode == null) {
+            return 0;
+        }
+        int total = 0;
+        Set<ClassNode> classes = packageNode.getAllClasses();
+        for (ClassNode classNode : classes) {
+            total += calculate(classNode);
+        }
+        return total;
+    }
+    
+    public Integer calculateMethodLevel(PackageNode packageNode) {
+        if (packageNode == null) {
+            return 0;
+        }
+        int total = 0;
+        Set<ClassNode> classes = packageNode.getAllClasses();
+        for (ClassNode classNode : classes) {
+            total += calculateMethodLevel(classNode);
+        }
+        return total;
     }
 }

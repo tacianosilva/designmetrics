@@ -22,12 +22,28 @@ public class Coupling {
     public Integer efferentCouplingMethodLevel(ClassNode node) {
         return ceMetric.calculateMethodLevel(node);
     }
+    
+    public Integer efferentCoupling(PackageNode node) {
+        return ceMetric.calculate(node);
+    }
+    
+    public Integer efferentCouplingMethodLevel(PackageNode node) {
+        return ceMetric.calculateMethodLevel(node);
+    }
 
     public Integer afferentCoupling(ClassNode node) {
         return caMetric.calculate(node);
     }
     
     public Integer afferentCouplingMethodLevel(ClassNode node) {
+        return caMetric.calculateMethodLevel(node);
+    }
+    
+    public Integer afferentCoupling(PackageNode node) {
+        return caMetric.calculate(node);
+    }
+    
+    public Integer afferentCouplingMethodLevel(PackageNode node) {
         return caMetric.calculateMethodLevel(node);
     }
 
