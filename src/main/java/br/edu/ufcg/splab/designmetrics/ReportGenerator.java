@@ -79,7 +79,8 @@ public class ReportGenerator {
             DesignWizard designWizard = new DesignWizard(projectDir);
 
             //classReport(projeto, resultsWriter, designWizard);
-            packageReport(projeto, designWizard);
+            //packageReport(projeto, designWizard);
+            TopClassesReport(projeto, designWizard);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -123,6 +124,25 @@ public class ReportGenerator {
                         + ", " + pr.getCa() + ", " + pr.getCaMl());
 
             //gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
+        }
+    }
+    
+    private static void TopClassesReport(String project, DesignWizard designWizard) {
+        logger.info("Generating Couple Top Classes Report ..." + project);
+        
+        // All packages from Project
+        TopClassesReport tc = new TopClassesReport(designWizard);
+        Set<ClassNode> classes = tc.getTopClasses();
+        
+        for (ClassNode classNodeA : classes) {
+            for (ClassNode classNodeB : classes) {
+                tc.execute(classNodeA, classNodeB);
+                logger.debug(project + ", " + classNodeA.getName() 
+                        + ", " + classNodeB.getClassName() 
+                        + ", " + tc.getCe());
+
+                //gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
+            }
         }
     }
     
