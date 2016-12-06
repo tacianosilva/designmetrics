@@ -9,14 +9,24 @@ public class TopPackagesReport extends ReportTemplate {
     
     private Integer ce;
     
+    /**
+     * @param dw
+     */
     public TopPackagesReport(DesignWizard dw) {
         super(dw);
     }
     
+    /**
+     * @return
+     */
     public Set<PackageNode> getTopPackages() {
         return coupling.getTopPackagesCe(10);
     }
     
+    /**
+     * @param nodeA
+     * @param nodeB
+     */
     public void execute(PackageNode nodeA, PackageNode nodeB) {
         this.ce = coupling.efferentCoupling(nodeA, nodeB);
     }
@@ -24,5 +34,4 @@ public class TopPackagesReport extends ReportTemplate {
     public Integer getCe() {
         return ce;
     }
-
 }
