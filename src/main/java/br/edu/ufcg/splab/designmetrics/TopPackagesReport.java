@@ -1,0 +1,28 @@
+package br.edu.ufcg.splab.designmetrics;
+
+import java.util.Set;
+
+import org.designwizard.api.DesignWizard;
+import org.designwizard.design.PackageNode;
+
+public class TopPackagesReport extends ReportTemplate {
+    
+    private Integer ce;
+    
+    public TopPackagesReport(DesignWizard dw) {
+        super(dw);
+    }
+    
+    public Set<PackageNode> getTopPackages() {
+        return coupling.getTopPackagesCe(10);
+    }
+    
+    public void execute(PackageNode nodeA, PackageNode nodeB) {
+        this.ce = coupling.efferentCoupling(nodeA, nodeB);
+    }
+
+    public Integer getCe() {
+        return ce;
+    }
+
+}
