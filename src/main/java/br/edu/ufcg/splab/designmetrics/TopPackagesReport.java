@@ -10,7 +10,7 @@ public class TopPackagesReport extends ReportTemplate {
     private Integer ce;
     
     /**
-     * @param dw
+     * @param dw An instance of the DesignWizard.
      */
     public TopPackagesReport(DesignWizard dw) {
         super(dw);
