@@ -15,6 +15,7 @@ public class Coupling {
     private DesignWizard designwizard;
     
     private Set<ClassNode> topClassesCe = null;
+    private Set<PackageNode> topPackagesCe = null;
 
     public Coupling(DesignWizard designwizard) {
         // Design for all classes in the project.
@@ -133,14 +134,42 @@ public class Coupling {
     }
     
     /**
+     * Calculate the packages with efferent coupling greater than the minimum value required.
+     * @param coupling Minimum value required.
+     */
+    public void calculateTopPackagesCe(Integer coupling) {
+        Set<PackageNode> packages = designwizard.getAllPackages();
+        this.topPackagesCe = new HashSet<>();
+        
+        for (PackageNode packageNode : packages) {
+            Integer ce = ceMetric.calculate(packageNode);
+            if (ce >= coupling) {
+                this.topPackagesCe.add(packageNode);
+            }
+        }
+    }
+    
+    /**
      * Returns the classes with efferent coupling greater than the desired value.
      * @param coupling Minimum value required.
      * @return The classes with efferent coupling greater than the desired value.
      */
     public Set<ClassNode> getTopClassesCe(Integer coupling) {
-        if (topClassesCe == null) {
+        if (this.topClassesCe == null) {
             calculateTopClassesCe(coupling);
         }
         return this.topClassesCe;
+    }
+    
+    /**
+     * Returns the packages with efferent coupling greater than the desired value.
+     * @param coupling Minimum value required.
+     * @return The packages with efferent coupling greater than the desired value.
+     */
+    public Set<PackageNode> getTopPackagesCe(Integer coupling) {
+        if (topPackagesCe == null) {
+            calculateTopPackagesCe(coupling);
+        }
+        return this.topPackagesCe;
     }
 }
