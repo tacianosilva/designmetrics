@@ -22,6 +22,8 @@ public class ReportGenerator {
 	
 	private static Logger logger = LogManager.getLogger(ReportGenerator.class);
 	
+	private static PrintWriter classReportWriter = null;
+	
 	private ReportGenerator() {
 	    super();
 	}
@@ -34,19 +36,16 @@ public class ReportGenerator {
 	
     public static void generateReport() {
         String fileName = "datasets/input/projects.txt";
-        String fileResults = "datasets/results/results_coupling.txt";
 
-        processarArquivo(fileName, fileResults);
+        processarArquivo(fileName);
     }
     
-    public static void processarArquivo(String fileProjects, String fileResults) {
+    public static void processarArquivo(String fileProjects) {
         try {
-            InputStreamReader arq = new InputStreamReader(new FileInputStream(fileProjects), StandardCharsets.UTF_8);
-            
+            InputStreamReader arq = new InputStreamReader(new FileInputStream(fileProjects), StandardCharsets.UTF_8);            
             BufferedReader lerArq = new BufferedReader(arq);
-
-            PrintWriter resultsWriter = new PrintWriter(criarArquivo(fileResults));
-            resultsWriter.printf("%s,%s,%s,%s,%s,%s%n", "project", "class", "ce", "ce ml", "ca", "ca ml");
+            
+            createClassReportWriter();
 
             String linha = lerArq.readLine(); // lê a primeira linha
             // a variável "linha" recebe o valor "null" quando o processo
@@ -54,19 +53,18 @@ public class ReportGenerator {
             while (linha != null) {
                 logger.info("Processando projeto: " + linha);
 
-                processarProjeto(linha, resultsWriter);
+                processarProjeto(linha);
 
                 linha = lerArq.readLine(); // lê da segunda até a última linha
             }
-
-            resultsWriter.close();
+            classReportWriter.close();
             lerArq.close();
         } catch (IOException e) {
             logger.error("Erro na abertura do arquivo: %s.%n", e);
         }
     }
 	
-    public static void processarProjeto(String projeto, PrintWriter resultsWriter) {
+    public static void processarProjeto(String projeto) {
         
         String reposDir = "/local_home/tacianosilva/workspace/";
         String classDir = getClassesDirectory(projeto);
@@ -78,10 +76,10 @@ public class ReportGenerator {
             
             DesignWizard designWizard = new DesignWizard(projectDir);
 
-            //classReport(projeto, resultsWriter, designWizard);
-            packageReport(projeto, designWizard);
+            classReport(projeto, designWizard);
+            //packageReport(projeto, designWizard);
             //TopClassesReport(projeto, designWizard);
-            TopPackagesReport(projeto, designWizard);
+            //TopPackagesReport(projeto, designWizard);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -90,7 +88,7 @@ public class ReportGenerator {
 
     }
 
-    private static void classReport(String projeto, PrintWriter resultsWriter, DesignWizard designWizard) {
+    private static void classReport(String projeto, DesignWizard designWizard) throws IOException {
         // All Classes from Project
         Set<ClassNode> classes = designWizard.getAllClasses();
 
@@ -104,10 +102,19 @@ public class ReportGenerator {
             Integer effMl = coupling.efferentCouplingMethodLevel(classNode);
             Integer affMl = coupling.afferentCouplingMethodLevel(classNode);
 
-            logger.debug(">>>>>" + projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
+            logger.debug(projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
 
-            gravarLinha(resultsWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
+            gravarLinha(classReportWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
         }
+    }
+    
+    private static PrintWriter createClassReportWriter() throws IOException {
+        String fileResults = "datasets/results/results_coupling.txt";
+        if (classReportWriter == null) {
+            classReportWriter = new PrintWriter(criarArquivo(fileResults));
+            classReportWriter.printf("%s,%s,%s,%s,%s,%s%n", "project", "class", "ce", "ce ml", "ca", "ca ml");
+        }
+        return classReportWriter;
     }
 
     private static void packageReport(String project, DesignWizard designWizard) {
