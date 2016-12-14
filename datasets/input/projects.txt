@@ -1,2 +1,3 @@
-designwizard
 epol-server
+epol-1.10.0
+epol-1.17.0

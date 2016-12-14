@@ -1,4 +1,4 @@
-package br.edu.ufcg.splab.designmetrics;
+package br.edu.ufcg.splab.designmetrics.reports;
 
 import org.designwizard.api.DesignWizard;
 import org.designwizard.design.PackageNode;

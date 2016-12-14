@@ -146,6 +146,14 @@
 				<configuration>
 					<destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
 					<datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
+					
+					<excludes>
+					        <exclude>br/edu/ufcg/splab/designmetrics/ReportGenerator.class</exclude>
+					        <exclude>br/edu/ufcg/splab/designmetrics/reports/**/*.class</exclude>
+                            <exclude>br/edu/ufcg/splab/designmetrics/mocks/**/*.class</exclude>
+                            <exclude>br/edu/ufcg/splab/designmetrics/**/*Test.class</exclude>
+                    </excludes>
+					
 				</configuration>
 				<executions>
 					<execution>

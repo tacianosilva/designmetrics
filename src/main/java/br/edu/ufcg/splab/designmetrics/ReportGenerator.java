@@ -17,6 +17,9 @@ import org.designwizard.design.ClassNode;
 import org.designwizard.design.PackageNode;
 
 import br.edu.ufcg.splab.designmetrics.metrics.Coupling;
+import br.edu.ufcg.splab.designmetrics.reports.PackageReport;
+import br.edu.ufcg.splab.designmetrics.reports.TopPackagesReport;
+import br.edu.ufcg.splab.designmetrics.reports.TopClassesReport;
 
 public class ReportGenerator {
 	
@@ -35,7 +38,8 @@ public class ReportGenerator {
 	}
 	
     public static void generateReport() {
-        String fileName = "datasets/input/projects.txt";
+        //String fileName = "datasets/input/projects.txt";
+        String fileName = "datasets/input/projects-test.txt";
 
         processarArquivo(fileName);
     }
@@ -101,8 +105,11 @@ public class ReportGenerator {
             
             Integer effMl = coupling.efferentCouplingMethodLevel(classNode);
             Integer affMl = coupling.afferentCouplingMethodLevel(classNode);
+            
+            Double inst = coupling.instability(classNode);
 
-            logger.debug(projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl + ", " + afferent + ", " + affMl);
+            logger.debug(projeto + ", " + classNode.getClassName() + ", " + efferent + ", " + effMl 
+                    + ", " + afferent + ", " + affMl + ", " + inst);
 
             gravarLinha(classReportWriter, projeto, classNode.getClassName(), efferent, effMl, afferent, affMl);
         }

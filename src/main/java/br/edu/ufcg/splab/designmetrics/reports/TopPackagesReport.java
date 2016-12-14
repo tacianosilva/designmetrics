@@ -1,4 +1,4 @@
-package br.edu.ufcg.splab.designmetrics;
+package br.edu.ufcg.splab.designmetrics.reports;
 
 import java.util.Set;
 
